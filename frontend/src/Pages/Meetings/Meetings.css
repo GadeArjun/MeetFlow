@@ -1,0 +1,100 @@
+.join-meeting-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 💬 Banner Section with Background Image */
+.join-banner {
+  position: relative;
+  background: url("../../assets/images/meetingBanner1.png") center/cover
+    no-repeat;
+  border-radius: 16px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+/* 🔳 Dark Overlay for Text Visibility */
+/* .join-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.288);
+  border-radius: 16px;
+  z-index: 0;
+} */
+
+/* 📄 Content Wrapper on Top of Banner */
+.join-banner > .text-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  text-align: center;
+}
+
+/* 📝 Heading and Description */
+.join-banner h1 {
+  font-size: 36px;
+  margin: 0 0 10px;
+  color: #1e1b4b; /* Midnight Indigo for deep contrast */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.join-banner p {
+  font-size: 18px;
+  color: #2e27ff; /* Slate Indigo for body text */
+  /* opacity: 0.95; */
+  margin: 0;
+}
+.join-banner h1,
+.join-banner p {
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5); /* Soft shadow for depth */
+}
+
+/* 📦 Meeting Content Section */
+.meeting-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 1024px) {
+  .join-banner h1 {
+    font-size: 28px;
+  }
+
+  .join-banner p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .join-banner {
+    flex-direction: column;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .join-banner > .text-content {
+    max-width: 100%;
+  }
+
+  .join-banner h1 {
+    font-size: 24px;
+  }
+
+  .join-banner p {
+    font-size: 15px;
+  }
+
+  .meeting-content {
+    flex-direction: column;
+  }
+}

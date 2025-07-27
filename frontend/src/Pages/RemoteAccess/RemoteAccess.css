@@ -1,0 +1,59 @@
+.remote-access-page {
+  padding: 32px;
+  max-width: 1100px;
+  margin: auto;
+  font-family: "Inter", sans-serif;
+  color: #1e293b;
+}
+
+.remote-access-page h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.remote-access-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.remote-access-grid > div {
+  flex: 1 1 400px;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+}
+
+.generate-btn {
+  margin-top: 16px;
+  padding: 12px 18px;
+  font-weight: 600;
+  background: linear-gradient(to right, #6366f1, #4f46e5);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.generate-btn:hover {
+  background: linear-gradient(to right, #4338ca, #4f46e5);
+}
+
+.generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .remote-access-page {
+    padding: 20px;
+  }
+
+  .remote-access-grid {
+    flex-direction: column;
+  }
+}

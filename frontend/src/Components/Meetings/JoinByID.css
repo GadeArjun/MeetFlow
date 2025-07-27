@@ -1,0 +1,81 @@
+.join-by-id-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.3s ease-in-out;
+}
+
+.join-by-id-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #1e293b;
+}
+
+.join-by-id-card input[type="text"],
+.join-by-id-card input[type="password"] {
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.join-by-id-card input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-row label {
+  font-size: 14px;
+  color: #475569;
+}
+
+.join-button {
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.join-button:hover {
+  transform: scale(1.03);
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .join-by-id-card {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .join-by-id-card h3 {
+    font-size: 18px;
+  }
+
+  .join-by-id-card input {
+    font-size: 15px;
+  }
+
+  .join-button {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+}

@@ -1,0 +1,118 @@
+.sidebar {
+  background-color: #111827;
+  color: #fff;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  height: 100vh;
+  position: fixed;
+  z-index: 100000;
+}
+
+.sidebar.open {
+  width: 220px;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.avatar {
+  width: 40px;
+  border-radius: 50%;
+}
+
+/* Sidebar logo styles */
+.sidebar-logo {
+  height: 55px;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.tooltip-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #e5e7eb;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.tooltip-item:hover {
+  background-color: #1f2937;
+}
+
+.tooltip-item .tooltip-text {
+  position: absolute;
+  left: 60px;
+  background: #334155;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+  color: #fff;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip-item.active {
+  background-color: #1f2937;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.tooltip-item.active svg {
+  color: #60a5fa;
+}
+
+.sidebar.collapsed .tooltip-item:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Mobile overlay mode */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    height: 100%;
+    left: -100%;
+    top: 0;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
+
+.sidebar-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ❌ Close Button */
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  cursor: pointer;
+}

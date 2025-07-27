@@ -1,0 +1,28 @@
+.sidebar-open .main-content {
+  margin-left: 220px;
+  transition: margin 0.3s ease;
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: 60px;
+  transition: margin 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  padding-left: 70px;
+  overflow-y: auto;
+  background-color: #f0f4ff;
+}
+
+@media (max-width: 786px) {
+  .sidebar-collapsed .main-content {
+    margin-left: 0px;
+    transition: margin 0.3s ease;
+  }
+  .sidebar-open .main-content {
+    margin-left: 0;
+    transition: margin 0.3s ease;
+  }
+}

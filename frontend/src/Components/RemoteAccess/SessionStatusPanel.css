@@ -1,0 +1,57 @@
+/* 📁 src/components/RemoteAccess/SessionStatusPanel.css */
+
+.session-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #4f46e5;
+  padding: 18px 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+}
+
+.session-panel h4 {
+  font-size: 17px;
+  margin-bottom: 4px;
+  color: #1e293b;
+}
+
+.session-panel p {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.end-btn {
+  background-color: #ef4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.end-btn:hover {
+  background-color: #dc2626;
+}
+
+@media (max-width: 600px) {
+  .session-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .end-btn {
+    width: 100%;
+  }
+}

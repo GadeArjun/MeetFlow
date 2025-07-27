@@ -1,0 +1,13 @@
+.meeting-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #1e1b4b, #312e81);
+  color: white;
+}
+
+.meeting-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

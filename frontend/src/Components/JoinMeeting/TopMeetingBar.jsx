@@ -1,0 +1,16 @@
+// 📁 src/components/Meeting/TopMeetingBar.jsx
+import React from "react";
+import "./TopMeetingBar.css";
+
+const TopMeetingBar = ({ roomName }) => {
+  return (
+    <div className="top-bar">
+      <div className="top-left">
+        <strong>{roomName}</strong> • 2-24
+      </div>
+      <button className="end-meeting">End Meeting</button>
+    </div>
+  );
+};
+
+export default TopMeetingBar;

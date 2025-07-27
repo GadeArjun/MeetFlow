@@ -1,0 +1,222 @@
+/* Container for the entire meeting form */
+.create-meeting-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+}
+
+.create-meeting-container h2 {
+  margin-bottom: 24px;
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Form Styling */
+.meeting-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.meeting-form label {
+  font-weight: 600;
+  color: #334155;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.meeting-form input,
+.meeting-form textarea {
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background: #f9fafb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meeting-form input:focus,
+.meeting-form textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Date + Time Row */
+.meeting-form .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.meeting-form .row > div {
+  flex: 1 1 30%;
+  min-width: 120px;
+}
+
+/* Submit Button */
+.create-button {
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.25s ease;
+}
+
+.create-button:hover {
+  background: linear-gradient(to right, #4338ca, #4f46e5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* Link Output Box */
+.meeting-link-box {
+  margin-top: 24px;
+  background: #f0f4f8;
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.meeting-link-box h4 {
+  margin-bottom: 8px;
+  color: #1d4ed8;
+  font-size: 18px;
+}
+
+.meeting-link-box input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #94a3b8;
+  background: white;
+  font-weight: 500;
+  color: #0f172a;
+  font-size: 15px;
+}
+
+.error-text {
+  color: #ef4444;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.email-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.email-row span {
+  font-weight: 600;
+  color: #334155;
+  min-width: 20px;
+}
+
+.email-row input {
+  flex: 1;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+}
+
+.add-email-btn {
+  background: transparent;
+  border: 1px dashed #3b82f6;
+  color: #3b82f6;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  width: fit-content;
+  margin-top: -5px;
+}
+
+.link-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link-actions input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.copy-btn,
+.whatsapp-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.copy-btn {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.copy-btn:hover {
+  background: #cbd5e1;
+}
+
+.whatsapp-btn {
+  background: #25d366;
+  color: white;
+  text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe5c;
+}
+
+/* ✅ Responsive Adjustments */
+@media (max-width: 768px) {
+  .create-meeting-container {
+    padding: 24px 20px;
+    margin: 20px;
+  }
+
+  .meeting-form .row {
+    flex-direction: column;
+  }
+
+  .meeting-form input,
+  .meeting-form textarea {
+    font-size: 14px;
+  }
+
+  .create-button {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,130 @@
+.scheduled-meetings-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 440px;
+  transition: all 0.3s ease;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-row h3 {
+  color: #1e293b;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.create-new {
+  background: transparent;
+  color: #3b82f6;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-new:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.meetings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.meeting-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  border-left: 5px solid;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: transform 0.2s ease;
+}
+
+.meeting-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.meeting-info h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.meeting-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Border colors */
+.meeting-card.pink {
+  border-color: #f472b6;
+}
+.meeting-card.green {
+  border-color: #34d399;
+}
+.meeting-card.purple {
+  border-color: #a78bfa;
+}
+
+.join-link {
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.join-link:hover {
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+}
+
+/* Responsive tweaks */
+@media (max-width: 500px) {
+  .scheduled-meetings-card {
+    padding: 16px;
+  }
+
+  .create-new {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+
+  .join-link {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .meeting-info h4 {
+    font-size: 15px;
+  }
+
+  .meeting-info p {
+    font-size: 13px;
+  }
+}

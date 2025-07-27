@@ -1,0 +1,49 @@
+/* 📁 src/pages/Settings/SecuritySettings.css */
+
+.security-settings {
+  padding: 10px 0;
+}
+
+.security-settings h3 {
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.toggle input {
+  transform: scale(1.1);
+}
+
+.device-list,
+.logs-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.device-list li,
+.logs-list li {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.device-list li p,
+.logs-list li span {
+  font-size: 14px;
+  color: #64748b;
+  margin: 4px 0 0;
+}

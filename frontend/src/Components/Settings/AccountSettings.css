@@ -1,0 +1,73 @@
+/* 📁 src/components/Settings/AccountSettings.css */
+
+.account-settings {
+  padding: 10px 0;
+}
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.account-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #334155;
+}
+
+.account-form input {
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.save-btn {
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+  background: linear-gradient(to right, #4338ca, #4f46e5);
+}
+
+.linked-accounts {
+  margin-top: 30px;
+}
+
+.linked-accounts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.linked-accounts li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.linked-accounts button {
+  background: #ef4444;
+  border: none;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.linked-accounts span {
+  color: #64748b;
+}
