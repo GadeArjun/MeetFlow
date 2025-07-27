@@ -1,0 +1,95 @@
+.remote-ui-container {
+  background-color: #111;
+  color: #eaeaea;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.remote-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.remote-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #a6c7ff;
+}
+
+.remote-status {
+  font-size: 14px;
+  color: #aaffaa;
+  background-color: #1f3b2f;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.remote-status .timer {
+  margin-left: 8px;
+  color: #b5b5b5;
+  font-weight: 500;
+}
+
+.remote-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.utility-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4c66ff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.utility-btn:hover {
+  background-color: #3b53e6;
+}
+
+.end-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.end-btn:hover {
+  background-color: #d93b3b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .remote-ui-container {
+    padding: 16px;
+  }
+
+  .remote-header h2 {
+    font-size: 18px;
+  }
+
+  .utility-btn,
+  .end-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}

@@ -1,0 +1,41 @@
+.screen-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1d1f28;
+  margin-bottom: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.device-preview {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  background-color: #0f1016;
+}
+
+.fallback-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  height: 350px;
+  background-color: #111218;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.fallback-text {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #777;
+}

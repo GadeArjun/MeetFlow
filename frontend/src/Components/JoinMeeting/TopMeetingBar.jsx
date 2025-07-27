@@ -4,7 +4,7 @@ import "./TopMeetingBar.css";
 
 const TopMeetingBar = ({ roomName }) => {
   return (
-    <div className="top-bar">
+    <div className="join-meeting-top-bar">
       <div className="top-left">
         <strong>{roomName}</strong> • 2-24
       </div>

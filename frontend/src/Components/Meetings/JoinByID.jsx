@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import "./JoinByID.css";
+import { useNavigate } from "react-router-dom";
 
 const JoinByID = () => {
   const [meetingID, setMeetingID] = useState("");
   const [password, setPassword] = useState("");
   const [isSecure, setIsSecure] = useState(false);
-
+  const navigate = useNavigate();
   const handleJoin = () => {
     console.log("Meeting ID:", meetingID);
     console.log("Password:", isSecure ? password : "Not Required");
     alert(
       `Joining Meeting: ${meetingID}\nPassword: ${isSecure ? password : "None"}`
     );
+    navigate(`/join-meeting/${meetingID}`)
   };
 
   return (

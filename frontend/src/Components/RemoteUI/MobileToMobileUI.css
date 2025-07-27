@@ -1,0 +1,23 @@
+/* 📁 src/Components/RemoteUI/MobileToMobileUI.css */
+
+.mobile-ui {
+  background-color: #101010;
+  color: #eaeaea;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.mobile-ui-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #a6c7ff;
+  text-align: center;
+}

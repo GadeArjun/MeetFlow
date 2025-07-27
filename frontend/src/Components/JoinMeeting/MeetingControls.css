@@ -1,21 +1,81 @@
-.meeting-controls {
+/* 📁 src/components/Meeting/MeetingControls.css - Dark Mode */
+
+.join-meeting-controls {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  padding: 16px;
-  background-color: #1e293b;
-  border-top: 1px solid #334155;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 12px 16px;
+  background-color: #1e1f25; /* Dark neutral background */
+  border-top: 1px solid #2d2f36;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  min-height: 80px;
 }
 
-.meeting-controls button {
-  background: #334155;
-  color: white;
-  padding: 10px 14px;
+.join-meeting-controls button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
   border: none;
   border-radius: 8px;
+  background-color: #2d2f3a; /* Darker button background */
+  color: #f1f1f1;
+  font-weight: 500;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.join-meeting-controls button:hover {
+  background-color: #3c3f4f;
 }
 
 .leave-btn {
-  background: crimson;
+  background-color: #e23e3e;
+  color: white;
+}
+
+.leave-btn:hover {
+  background-color: #c33232;
+}
+
+.join-meeting-controls button svg {
+  stroke: #f1f1f1;
+  stroke-width: 2;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .join-meeting-controls {
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 10px 8px;
+  }
+
+  .join-meeting-controls button {
+    flex-direction: column;
+    padding: 8px;
+    font-size: 11px;
+    min-width: 60px;
+  }
+
+  .join-meeting-controls button span {
+    font-size: 10px;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 300px) {
+  .join-meeting-controls button {
+    padding: 6px;
+    min-width: 50px;
+    font-size: 10px;
+  }
+
+  .join-meeting-controls button span {
+    display: none;
+  }
 }

@@ -1,0 +1,72 @@
+/* 📁 src/Components/RemoteUI/DesktopToMobileUI.css */
+
+.desktop-to-mobile-ui {
+  background-color: #121212;
+  color: #f2f2f2;
+  padding: 24px;
+  border-radius: 12px;
+  font-family: "Segoe UI", sans-serif;
+  max-width: 700px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.desktop-to-mobile-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #aad8ff;
+  text-align: center;
+}
+
+.log-panel {
+  width: 100%;
+  background-color: #1d1d1d;
+  padding: 16px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.log-heading {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #e2e2e2;
+}
+
+.log-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.log-list li {
+  font-size: 15px;
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+  color: #c9c9c9;
+}
+
+.log-list li:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 500px) {
+  .desktop-to-mobile-ui {
+    padding: 16px;
+  }
+
+  .log-panel {
+    padding: 12px;
+  }
+
+  .log-heading {
+    font-size: 15px;
+  }
+
+  .log-list li {
+    font-size: 14px;
+  }
+}

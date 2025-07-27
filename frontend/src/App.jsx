@@ -8,6 +8,7 @@ import CreateMeeting from "./Pages/CreateMeeting/CreateMeeting";
 import RemoteAccess from "./Pages/RemoteAccess/RemoteAccess";
 import Settings from "./Pages/Settings/Settings";
 import JoinMeeting from "./Pages/JoinMeeting/JoinMeeting";
+import RemoteController from "./Pages/RemoteController/RemoteController";
 
 function App() {
   return (
@@ -56,13 +57,8 @@ function App() {
             </MainLayout>
           }
         />
-
-        <Route
-          path="/a"
-          element={
-           <JoinMeeting/>
-          }
-        />
+        <Route path="/join-meeting/:meetingID" element={<JoinMeeting />} />
+        <Route path="/remote-controller" element={<RemoteController targetDevice={"mobile"} />} />
       </Routes>
     </>
   );

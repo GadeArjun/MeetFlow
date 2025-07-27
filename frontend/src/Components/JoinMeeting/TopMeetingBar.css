@@ -1,16 +1,57 @@
-.top-bar {
+.join-meeting-top-bar {
+  background-color: #1f1f28; /* Deep neutral */
+  border-bottom: 1px solid #333444;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
-  padding: 16px 20px;
-  background-color: #111827;
-  border-bottom: 1px solid #334155;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #eaeaea; /* Light text for contrast */
+  font-family: "Segoe UI", sans-serif;
 }
 
-.end-meeting {
-  background-color: crimson;
-  color: white;
-  padding: 8px 14px;
+.top-left strong {
+  color: #bcb6ff; /* Soft violet for room name */
+}
+
+.join-meeting-top-bar .end-meeting {
+  background-color: #e23e3e;
+  color: #fff;
   border: none;
+  padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.join-meeting-top-bar .end-meeting:hover {
+  background-color: #c23232;
+}
+
+/* Responsive: Small screens */
+@media (max-width: 500px) {
+  .join-meeting-top-bar {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .join-meeting-top-bar .end-meeting {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+/* Responsive: Extra small (≤300px or ≤280px) */
+@media (max-width: 300px) {
+  .join-meeting-top-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .join-meeting-top-bar .end-meeting {
+    align-self: flex-end;
+  }
 }

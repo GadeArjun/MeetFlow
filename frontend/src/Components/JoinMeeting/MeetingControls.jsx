@@ -1,16 +1,16 @@
 // 📁 src/components/Meeting/MeetingControls.jsx
 import React from "react";
-import { Mic, Video, ScreenShare, Hand } from "lucide-react";
+import { Mic, Video, VideoOff, ScreenShare, Hand } from "lucide-react";
 import "./MeetingControls.css";
 
-const MeetingControls = () => {
+const MeetingControls = ({ onStartCamera, onStopCamera, isCameraOn }) => {
   return (
-    <div className="meeting-controls">
-      <button>
-        <Mic /> Mute
+    <div className="join-meeting-controls">
+      <button onClick={isCameraOn ? onStopCamera : onStartCamera}>
+        {isCameraOn ? <VideoOff /> : <Video />} Camera
       </button>
       <button>
-        <Video /> Camera
+        <Mic /> Mute
       </button>
       <button>
         <ScreenShare /> Share

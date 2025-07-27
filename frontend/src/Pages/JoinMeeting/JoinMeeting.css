@@ -1,13 +1,94 @@
-.meeting-container {
+.join-meeting-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: linear-gradient(to bottom right, #1e1b4b, #312e81);
-  color: white;
+  background-color: #1e1e2a; /* Dark background */
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden;
+  color: #e0e0e0; /* Light text */
 }
 
-.meeting-body {
-  display: flex;
+.join-meeting-body {
   flex: 1;
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+  /* Removed smooth scroll */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #9d84ff transparent; /* Firefox */
+}
+
+/* WebKit Browsers (Chrome, Edge, Safari) */
+.join-meeting-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.join-meeting-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.join-meeting-body::-webkit-scrollbar-thumb {
+  background-color: #9d84ff;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.join-meeting-body::-webkit-scrollbar-thumb:hover {
+  background-color: #b3a1ff;
+}
+
+.join-meeting-video-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  /* Removed smooth scroll */
+  scrollbar-width: thin;
+  scrollbar-color: #9d84ff transparent;
+}
+
+/* WebKit Browsers (Chrome, Edge, Safari) */
+.join-meeting-video-area::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.join-meeting-video-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.join-meeting-video-area::-webkit-scrollbar-thumb {
+  background-color: #9d84ff;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.join-meeting-video-area::-webkit-scrollbar-thumb:hover {
+  background-color: #b3a1ff;
+}
+
+/* Responsive Layouts */
+@media (max-width: 768px) {
+  .join-meeting-body {
+    flex-direction: column;
+  }
+
+  .join-meeting-video-area {
+    padding: 12px;
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 400px) {
+  .join-meeting-video-area {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 280px) {
+  .join-meeting-video-area {
+    padding: 6px;
+  }
 }
