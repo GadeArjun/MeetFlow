@@ -1,33 +1,63 @@
-// 📁 src/components/Settings/AccountSettings.jsx
-import React, { useState } from "react";
+// export default AccountSettings;
+import React, { useState, useContext } from "react";
 import "./AccountSettings.css";
+import { UserContext } from "../../context/UserContext";
 
 const AccountSettings = () => {
+  const { user } = useContext(UserContext);
+
   const [account, setAccount] = useState({
-    email: "user@example.com",
+    email: user?.email || "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-//   const [linkedAccounts, setLinkedAccounts] = useState({
-//     google: true,
-//     github: false,
-//   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setAccount({ ...account, [e.target.name]: e.target.value });
   };
 
-//   const handleUnlink = (provider) => {
-//     setLinkedAccounts({ ...linkedAccounts, [provider]: false });
-//     alert(`${provider} account unlinked`);
-//   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Account Updated:", account);
-    alert("Account settings updated successfully!");
+    setError("");
+
+    const { email, currentPassword, newPassword, confirmPassword } = account;
+
+    if (newPassword && newPassword !== confirmPassword) {
+      return setError("New password and confirm password do not match.");
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/user/account", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          email,
+          currentPassword,
+          newPassword,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      alert("Account updated successfully!");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,33 +108,12 @@ const AccountSettings = () => {
           />
         </label>
 
-        <button type="submit" className="save-btn">
-          Save Changes
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" className="save-btn" disabled={loading}>
+          {loading ? "Saving..." : "Save Changes"}
         </button>
       </form>
-
-      {/* Linked Accounts */}
-      {/* <div className="linked-accounts">
-        <h4>🔗 Linked Accounts</h4>
-        <ul>
-          <li>
-            Google:{" "}
-            {linkedAccounts.google ? (
-              <button onClick={() => handleUnlink("google")}>Unlink</button>
-            ) : (
-              <span>Not Linked</span>
-            )}
-          </li>
-          <li>
-            GitHub:{" "}
-            {linkedAccounts.github ? (
-              <button onClick={() => handleUnlink("github")}>Unlink</button>
-            ) : (
-              <span>Not Linked</span>
-            )}
-          </li>
-        </ul>
-      </div> */}
     </div>
   );
 };

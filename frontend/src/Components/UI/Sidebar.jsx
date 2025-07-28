@@ -21,7 +21,6 @@ const menuItems = [
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
-  // console.log(location.pathname);
 
   const handleItemClick = () => {
     toggleSidebar(false); // to auto-close on mobile

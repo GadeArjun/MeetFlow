@@ -21,7 +21,6 @@ const Preferences = () => {
       language,
       notifications,
     };
-    console.log("Saved Preferences:", preferences);
     alert("Preferences saved successfully!");
   };
 

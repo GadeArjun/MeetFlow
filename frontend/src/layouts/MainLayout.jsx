@@ -8,7 +8,6 @@ import "./MainLayout.css";
 const MainLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const toggleSidebar = (value = null) => {
-    console.log(value);
     if (value != null) {
       setSidebarOpen(value);
     } else if (value == null) {

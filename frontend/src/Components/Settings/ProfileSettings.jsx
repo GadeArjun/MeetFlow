@@ -1,14 +1,33 @@
 // 📁 src/components/Settings/ProfileSettings.jsx
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./ProfileSettings.css";
+import { UserContext } from "../../context/UserContext";
 
 const ProfileSettings = () => {
+  const { user, setUser } = useContext(UserContext);
+
   const [profile, setProfile] = useState({
-    name: "Arjun Gade",
-    username: "arjun_g",
-    bio: "Frontend Developer and Tech Enthusiast",
-    image: "", // for preview
+    name: "",
+    username: "",
+    bio: "",
+    avatarUrl: "", // saved URL
+    imagePreview: "", // local preview
+    imageFile: null, // raw file
   });
+
+  // Load user data on mount
+  useEffect(() => {
+    if (user) {
+      setProfile((prev) => ({
+        ...prev,
+        name: user.name || "",
+        username: user.username || "",
+        bio: user.bio || "",
+        avatarUrl: user.avatarUrl || "",
+        imagePreview: user.avatarUrl || "/user.png",
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -17,14 +36,59 @@ const ProfileSettings = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfile({ ...profile, image: URL.createObjectURL(file) });
+      setProfile({
+        ...profile,
+        imagePreview: URL.createObjectURL(file),
+        imageFile: file,
+      });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Updated Profile:", profile);
-    alert("Profile updated successfully!");
+
+    try {
+      let avatarUrl = profile.avatarUrl;
+
+      // Upload image if changed
+      if (profile.imageFile) {
+        const formData = new FormData();
+        formData.append("file", profile.imageFile);
+
+        // Simulate image upload (replace with real endpoint)
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        avatarUrl = data.url;
+      }
+
+      const updatedData = {
+        name: profile.name,
+        username: profile.username,
+        bio: profile.bio,
+        avatarUrl,
+      };
+
+      // Send profile update request
+      const res = await fetch("/api/user/update-profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      const updatedUser = await res.json();
+      setUser(updatedUser);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile.");
+    }
   };
 
   return (
@@ -33,17 +97,15 @@ const ProfileSettings = () => {
       <p>Update your personal information and profile picture.</p>
 
       <form onSubmit={handleSubmit} className="profile-form">
-        {/* Profile Image Preview & Upload */}
         <div className="image-section">
           <img
-            src={profile.image || "/user.png"}
+            src={profile.imagePreview || "/user.png"}
             alt="Profile Preview"
             className="profile-image"
           />
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </div>
 
-        {/* Name */}
         <label>
           Full Name
           <input
@@ -55,7 +117,6 @@ const ProfileSettings = () => {
           />
         </label>
 
-        {/* Username */}
         <label>
           Username
           <input
@@ -63,11 +124,9 @@ const ProfileSettings = () => {
             name="username"
             value={profile.username}
             onChange={handleChange}
-            required
           />
         </label>
 
-        {/* Bio */}
         <label>
           Bio
           <textarea

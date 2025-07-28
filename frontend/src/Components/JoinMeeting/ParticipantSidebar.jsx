@@ -8,7 +8,7 @@ const ParticipantSidebar = ({ participants = [] }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const handleRequestRemoteAccess = (participant) => {
-    if (!remoteRequests.some((r) => r.id === participant.id)) {
+    if (!remoteRequests.some((r) => r._id === participant._id)) {
       setRemoteRequests((prev) => [...prev, participant]);
     }
     setOpenMenuId(null);
@@ -16,7 +16,7 @@ const ParticipantSidebar = ({ participants = [] }) => {
 
   const handleApprove = (id) => {
     alert(`Remote access granted to ${id}`);
-    setRemoteRequests((prev) => prev.filter((p) => p.id !== id));
+    setRemoteRequests((prev) => prev.filter((p) => p._id !== id));
   };
 
   return (
@@ -25,19 +25,19 @@ const ParticipantSidebar = ({ participants = [] }) => {
       <div className="sidebar-scroll">
         <ul className="participant-list">
           {participants.map((p) => (
-            <li key={p.id} className="participant-item">
+            <li key={p._id} className="participant-item">
               <span>🟢 {p.name}</span>
               <div className="participant-actions">
                 <button
                   className="more-options"
                   onClick={() =>
-                    setOpenMenuId(openMenuId === p.id ? null : p.id)
+                    setOpenMenuId(openMenuId === p._id ? null : p._id)
                   }
                 >
                   <MoreVertical size={16} />
                 </button>
 
-                {openMenuId === p.id && (
+                {openMenuId === p._id && (
                   <div className="dropdown-menu">
                     <button onClick={() => handleRequestRemoteAccess(p)}>
                       Request Remote Access
@@ -57,9 +57,11 @@ const ParticipantSidebar = ({ participants = [] }) => {
             <h4>Remote Access Requests</h4>
             <ul className="request-list">
               {remoteRequests.map((req) => (
-                <li key={req.id} className="request-item">
+                <li key={req._id} className="request-item">
                   {req.name}
-                  <button onClick={() => handleApprove(req.id)}>Approve</button>
+                  <button onClick={() => handleApprove(req._id)}>
+                    Approve
+                  </button>
                 </li>
               ))}
             </ul>

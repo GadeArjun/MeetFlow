@@ -1,5 +1,10 @@
-import React, { useRef } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useContext, useEffect, useRef } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Landing from "./Pages/Landing/Landing";
 import Meetings from "./Pages/Meetings/Meetings";
@@ -9,11 +14,34 @@ import RemoteAccess from "./Pages/RemoteAccess/RemoteAccess";
 import Settings from "./Pages/Settings/Settings";
 import JoinMeeting from "./Pages/JoinMeeting/JoinMeeting";
 import RemoteController from "./Pages/RemoteController/RemoteController";
+import { UserContext } from "./context/UserContext";
+import FullScreenLoader from "./Pages/Loading/FullScreenLoader";
+import ErrorPage from "./Pages/ErrorPage/ErrorPage";
+import Login from "./Pages/Auth/Login";
+import Register from "./Pages/Auth/Register";
 
 function App() {
+  const { user, userContextLoading } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userContextLoading) {
+      return;
+    }
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, userContextLoading]);
+
+  if (userContextLoading) {
+    return <FullScreenLoader />;
+  }
   return (
     <>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
         <Route path="/" element={<Landing />} />
         <Route
           path="/dashboard"
@@ -58,7 +86,11 @@ function App() {
           }
         />
         <Route path="/join-meeting/:meetingID" element={<JoinMeeting />} />
-        <Route path="/remote-controller" element={<RemoteController targetDevice={"mobile"} />} />
+        <Route
+          path="/remote-controller"
+          element={<RemoteController targetDevice={"mobile"} />}
+        />
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>
   );

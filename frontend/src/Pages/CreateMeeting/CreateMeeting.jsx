@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./CreateMeeting.css";
-import { Calendar, Clock, MailPlus, XCircle, Link2, Send, Copy } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  MailPlus,
+  XCircle,
+  Link2,
+  Send,
+  Copy,
+} from "lucide-react";
+import axios from "axios";
+import { MeetingContext } from "../../context/MeetingContext";
 
 const CreateMeeting = () => {
   const [form, setForm] = useState({
@@ -15,6 +25,7 @@ const CreateMeeting = () => {
   const [emails, setEmails] = useState([{ id: 1, value: "" }]);
   const [generatedLink, setGeneratedLink] = useState("");
   const [error, setError] = useState("");
+  const { setMeetings } = useContext(MeetingContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -51,31 +62,65 @@ const CreateMeeting = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setGeneratedLink("");
 
     if (!isValidTime()) {
       return setError("Start time must be in the future.");
     }
 
-    const meetingId = Math.random().toString(36).substring(2, 10);
-    const link = `${window.location.origin}/join/${meetingId}`;
-    setGeneratedLink(link);
+    const meetingCode = Math.random().toString(36).substring(2, 10);
+    const meetingLink = `/join-meeting/${meetingCode}`;
 
     const validEmails = emails.map((e) => e.value.trim()).filter((e) => e);
-    console.log("Meeting Data:", { ...form, link, emails: validEmails });
 
-    // Reset
-    setForm({
-      title: "",
-      description: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      password: "",
-    });
-    setEmails([{ id: 1, value: "" }]);
+    const payload = {
+      title: form.title,
+      description: form.description,
+      date: form.date,
+      startTime: form.startTime,
+      endTime: form.endTime,
+      password: form.password || null,
+      invitedEmails: validEmails,
+      isPublic: validEmails.length === 0, // open to all if no invitedEmails
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/meeting`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const { meeting } = response.data;
+      setMeetings((prev) => [meeting, ...prev]);
+      setGeneratedLink(
+        window.location.origin + (meeting.meetingLink || meetingLink)
+      );
+      alert("Meeting created successfully!");
+
+      // Reset form
+      setForm({
+        title: "",
+        description: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        password: "",
+      });
+      setEmails([{ id: 1, value: "" }]);
+    } catch (err) {
+      const msg =
+        err.response?.data?.error ||
+        "Something went wrong while creating meeting.";
+      setError(msg);
+    }
   };
 
   return (
@@ -153,7 +198,6 @@ const CreateMeeting = () => {
               placeholder="example@email.com"
               value={email.value}
               onChange={(e) => handleEmailChange(index, e.target.value)}
-              required
             />
             {emails.length > 1 && (
               <button
@@ -197,7 +241,7 @@ const CreateMeeting = () => {
               <button
                 className="copy-btn"
                 onClick={() => {
-                  navigator.clipboard.writeText(generatedLink);
+                  navigator.clipboard.writeText(`${generatedLink}`);
                   alert("Link copied to clipboard!");
                 }}
               >

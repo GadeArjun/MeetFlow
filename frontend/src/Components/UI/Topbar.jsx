@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import "./Topbar.css";
-import { Menu, SunMoon, Bell } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Menu, User } from "lucide-react";
+import { UserContext } from "../../context/UserContext";
 
 const Topbar = ({ toggleSidebar }) => {
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const [imageError, setImageError] = useState(false);
+
+  const avatarUrl = user?.avatarUrl;
 
   return (
     <div className="topbar">
-      <button onClick={()=>toggleSidebar()} className="hamburger-btn">
+      <button onClick={toggleSidebar} className="hamburger-btn">
         <Menu size={22} />
       </button>
+
       <div className="top-actions">
-        <img src="/user.png" alt="Profile" className="avatar" />
+        {!imageError && avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt="Profile"
+            className="avatar"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <User className="avatar" />
+        )}
       </div>
     </div>
   );

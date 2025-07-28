@@ -128,3 +128,33 @@
     font-size: 13px;
   }
 }
+
+.status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.scheduled {
+  background-color: #ffe58f;
+  color: #8c6d1f;
+}
+
+.status.ongoing {
+  background-color: #bae7ff;
+  color: #0050b3;
+}
+
+.status.completed {
+  background-color: #d9f7be;
+  color: #237804;
+}
+
+.status.cancelled {
+  background-color: #ffa39e;
+  color: #a8071a;
+}

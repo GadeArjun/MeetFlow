@@ -6,7 +6,7 @@ const TopMeetingBar = ({ roomName }) => {
   return (
     <div className="join-meeting-top-bar">
       <div className="top-left">
-        <strong>{roomName}</strong> • 2-24
+        <strong>{roomName}</strong>
       </div>
       <button className="end-meeting">End Meeting</button>
     </div>
