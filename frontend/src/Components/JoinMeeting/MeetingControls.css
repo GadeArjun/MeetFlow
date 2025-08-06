@@ -1,81 +1,97 @@
-/* 📁 src/components/Meeting/MeetingControls.css - Dark Mode */
-
-.join-meeting-controls {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding: 12px 16px;
-  background-color: #1e1f25; /* Dark neutral background */
-  border-top: 1px solid #2d2f36;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
-  min-height: 80px;
+/* Wrapper - fixed floating bar at bottom center */
+.meeting-controls {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: auto;
 }
 
-.join-meeting-controls button {
+/* Inner pill container */
+.controls-inner {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
+  background: rgba(15, 17, 22, 0.85);
+  border-radius: 999px;
   padding: 10px 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Base button style */
+.control-btn {
   border: none;
-  border-radius: 8px;
-  background-color: #2d2f3a; /* Darker button background */
-  color: #f1f1f1;
-  font-weight: 500;
-  font-size: 14px;
+  outline: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e9f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.join-meeting-controls button:hover {
-  background-color: #3c3f4f;
+/* Prominent bigger button (camera) */
+.control-btn.big {
+  width: 58px;
+  height: 58px;
 }
 
-.leave-btn {
-  background-color: #e23e3e;
-  color: white;
+/* State: active/on */
+.control-btn.on {
+  background: rgba(34, 197, 94, 0.15); /* green tint */
+  color: #22c55e;
 }
 
-.leave-btn:hover {
-  background-color: #c33232;
+/* State: off/inactive */
+.control-btn.off {
+  background: rgba(255, 255, 255, 0.06);
+  color: #9aa0af;
 }
 
-.join-meeting-controls button svg {
-  stroke: #f1f1f1;
-  stroke-width: 2;
+/* End call button special */
+.control-btn.end {
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  color: #fff;
+}
+.control-btn.end:hover {
+  background: linear-gradient(180deg, #f87171, #ef4444);
 }
 
-/* Tablet */
-@media (max-width: 768px) {
-  .join-meeting-controls {
-    justify-content: space-around;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 10px 8px;
+/* Hover effects */
+.control-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+.control-btn:active {
+  transform: translateY(-1px) scale(0.97);
+}
+
+/* Focus ring for accessibility */
+.control-btn:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+/* Tooltip via title attribute will still work — optionally you can style custom tooltips */
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .controls-inner {
+    gap: 8px;
+    padding: 8px 12px;
   }
-
-  .join-meeting-controls button {
-    flex-direction: column;
-    padding: 8px;
-    font-size: 11px;
-    min-width: 60px;
+  .control-btn {
+    width: 42px;
+    height: 42px;
   }
-
-  .join-meeting-controls button span {
-    font-size: 10px;
-  }
-}
-
-/* Extra Small Devices */
-@media (max-width: 300px) {
-  .join-meeting-controls button {
-    padding: 6px;
-    min-width: 50px;
-    font-size: 10px;
-  }
-
-  .join-meeting-controls button span {
-    display: none;
+  .control-btn.big {
+    width: 50px;
+    height: 50px;
   }
 }

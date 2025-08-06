@@ -11,11 +11,11 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <UserContextProvider>
       <MeetingContextProvider>
-        <MeetingSocketProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </MeetingSocketProvider>
+          <MeetingSocketProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </MeetingSocketProvider>
       </MeetingContextProvider>
     </UserContextProvider>
   </StrictMode>

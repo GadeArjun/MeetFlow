@@ -29,29 +29,3 @@
 .join-meeting-top-bar .end-meeting:hover {
   background-color: #c23232;
 }
-
-/* Responsive: Small screens */
-@media (max-width: 500px) {
-  .join-meeting-top-bar {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-
-  .join-meeting-top-bar .end-meeting {
-    padding: 6px 10px;
-    font-size: 13px;
-  }
-}
-
-/* Responsive: Extra small (≤300px or ≤280px) */
-@media (max-width: 300px) {
-  .join-meeting-top-bar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-  }
-
-  .join-meeting-top-bar .end-meeting {
-    align-self: flex-end;
-  }
-}

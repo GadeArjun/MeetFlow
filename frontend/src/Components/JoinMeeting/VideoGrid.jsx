@@ -1,202 +1,265 @@
-// import React from "react";
-// import { User, Video, ScreenShare, MoreVertical } from "lucide-react";
-// import "./VideoGrid.css";
-
-// const VideoGrid = ({ participants, currentUser, localStream, videoRef }) => {
-//   return (
-//     <div className="video-grid">
-//       {participants.map((user) => {
-//         const isCurrentUser = user._id === currentUser?._id;
-//         const streamObj =
-//           user._id === currentUser._id ? localStream : user.videoStream || {};
-//         const hasCamera = streamObj?.camera
-//           ?.getVideoTracks()
-//           ?.some((t) => t.readyState === "live");
-//         const hasScreen = streamObj?.screen
-//           ?.getVideoTracks()
-//           ?.some((t) => t.readyState === "live");
-
-//         return (
-//           <div className="video-tile" key={user._id}>
-//             <button className="tile-menu-btn">
-//               <MoreVertical size={18} />
-//             </button>
-
-//             <div
-//               className={`dual-stream-container ${
-//                 hasCamera && hasScreen ? "split" : ""
-//               }`}
-//             >
-//               {/* Camera */}
-//               <div className="stream-section">
-//                 {hasCamera ? (
-//                   <video
-//                     autoPlay
-//                     playsInline
-//                     muted={isCurrentUser}
-//                     ref={(el) => {
-//                       if (el) el.srcObject = streamObj.camera;
-//                       if (isCurrentUser && videoRef) videoRef.current = el;
-//                     }}
-//                     className="user-video"
-//                   />
-//                 ) : (
-//                   <div className="video-placeholder">
-//                     <Video size={28} />
-//                   </div>
-//                 )}
-//               </div>
-
-//               {/* Screen */}
-//               <div className="stream-section">
-//                 {hasScreen ? (
-//                   <video
-//                     autoPlay
-//                     playsInline
-//                     muted={isCurrentUser}
-//                     ref={(el) => {
-//                       if (el) el.srcObject = streamObj.screen;
-//                     }}
-//                     className="user-video"
-//                   />
-//                 ) : (
-//                   <div className="video-placeholder">
-//                     <ScreenShare size={28} />
-//                   </div>
-//                 )}
-//               </div>
-//             </div>
-
-//             <span className="username">
-//               {isCurrentUser ? "You" : user.name}
-//             </span>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// };
-
-// export default VideoGrid;
-
-import React from "react";
-import { User, Video, ScreenShare, MoreVertical, Expand } from "lucide-react";
+// src/Components/JoinMeeting/VideoGrid.jsx
+import React, { useState } from "react";
+import {
+  Video,
+  ScreenShare,
+  MoreVertical,
+  Expand,
+  User,
+  CrossIcon,
+  Cross,
+  LucideCross,
+  ShowerHead,
+  LucideFullscreen,
+} from "lucide-react";
 import "./VideoGrid.css";
 
-const VideoGrid = ({ participants, currentUser, localStream, videoRef }) => {
+/**
+ * Props:
+ * - currentUserId: string (your user._id)
+ * - registerLocalVideoRef: ref callback for local camera <video>
+ * - localScreenRef: ref callback for local screen <video>
+ * - remoteStreams: { [socketId]: { camera?: MediaStream, screen?: MediaStream } }
+ * - remoteMediaStates: { [socketId]: { isCameraOn?: boolean, isScreenSharing?: boolean } }
+ * - localIsCameraOn: boolean (local camera state)
+ * - localIsScreenSharing: boolean (local screen state)
+ */
+const VideoGrid = ({
+  currentUserId,
+  registerLocalVideoRef,
+  localScreenRef,
+  remoteStreams = {},
+  remoteMediaStates = {},
+  localIsCameraOn = false,
+  localIsScreenSharing = false,
+}) => {
+  const remoteEntries = Object.entries(remoteStreams || {});
+  const [isFullSelf, setisFullSelf] = useState(false);
+  const toggleFullscreen = (el) => {
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen().catch((err) => console.error("FS error:", err));
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   return (
-    <div className="video-grid">
-      {participants.map((user) => {
-        const isCurrentUser = user._id === currentUser?._id;
-        const streamObj =
-          user._id === currentUser._id ? localStream : user.videoStream || {};
-        const hasCamera = streamObj?.camera
-          ?.getVideoTracks()
-          ?.some((t) => t.readyState === "live");
-        const hasScreen = streamObj?.screen
-          ?.getVideoTracks()
-          ?.some((t) => t.readyState === "live");
+    <>
+      {/* Remote participants grid */}
+      <div className="video-grid">
+        <div className="other-grid">
+          {remoteEntries.map(([socketId, streams]) => {
+            // Skip self if present in remoteStreams
+            if (socketId === currentUserId) return null;
 
-        return (
-          <div className="video-tile" key={user._id}>
-            <button className="tile-menu-btn">
-              <MoreVertical size={18} />
-            </button>
+            const isCamOn = !!remoteMediaStates[socketId]?.isCameraOn;
+            const isScreenOn = !!remoteMediaStates[socketId]?.isScreenSharing;
 
-            <div className={`dual-stream-container ${"split"}`}>
-              {/* Camera */}
-              <div className="stream-section">
-                {hasCamera ? (
-                  <div>
-                    <span
-                      className="video-icon-on-start fullscreen-toggle"
-                      onClick={() => {
-                        if (videoRef?.current) {
-                          if (!document.fullscreenElement) {
-                            videoRef.current.requestFullscreen();
-                          } else {
-                            document.exitFullscreen();
-                          }
-                        }
-                      }}
-                      title="Toggle Fullscreen"
-                    >
-                      <Expand size={20} color="white" />
-                    </span>
-                    <video
-                      autoPlay
-                      playsInline
-                      muted={isCurrentUser}
-                      ref={(el) => {
-                        if (el) el.srcObject = streamObj.camera;
-                        if (isCurrentUser && videoRef) videoRef.current = el;
-                      }}
-                      className="user-video"
-                    />
+            const bothOff = !isCamOn && !isScreenOn;
+
+            return (
+              <div className="video-tile" key={socketId}>
+                <button className="tile-menu-btn" aria-label="menu">
+                  <MoreVertical size={16} />
+                </button>
+
+                <div className="dual-stream-container split">
+                  {/* Camera Section */}
+                  <div className="stream-section">
+                    {isCamOn ? (
+                      <>
+                        <span
+                          className="video-icon-on-start fullscreen-toggle"
+                          onClick={() => {
+                            const el = document.getElementById(
+                              `cam-${socketId}`
+                            );
+                            toggleFullscreen(el);
+                          }}
+                          title="Toggle Fullscreen"
+                        >
+                          <Expand size={18} color="white" />
+                        </span>
+
+                        <video
+                          id={`cam-${socketId}`}
+                          autoPlay
+                          playsInline
+                          ref={(el) => {
+                            if (el && el.srcObject !== streams.camera) {
+                              el.srcObject = streams.camera;
+                            }
+                          }}
+                          className="user-video"
+                        />
+                      </>
+                    ) : bothOff ? (
+                      /* When both are off, show User icon centered in the first section */
+                      <div className="video-placeholder single-user">
+                        <User size={34} />
+                      </div>
+                    ) : (
+                      /* Camera is off but screen might be on — show camera icon placeholder */
+                      <div className="video-placeholder">
+                        <Video size={28} />
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="video-placeholder">
-                    <Video size={28} />
+
+                  <div className="stream-divider" />
+
+                  {/* Screen Section */}
+                  <div className="stream-section">
+                    {isScreenOn ? (
+                      <>
+                        <span
+                          className="video-icon-on-start fullscreen-toggle"
+                          onClick={() => {
+                            const el = document.getElementById(
+                              `screen-${socketId}`
+                            );
+                            toggleFullscreen(el);
+                          }}
+                          title="Toggle Fullscreen"
+                        >
+                          <Expand size={18} color="white" />
+                        </span>
+
+                        <video
+                          id={`screen-${socketId}`}
+                          autoPlay
+                          playsInline
+                          ref={(el) => {
+                            if (el && el.srcObject !== streams.screen) {
+                              el.srcObject = streams.screen;
+                            }
+                          }}
+                          className="user-video"
+                        />
+                      </>
+                    ) : bothOff ? (
+                      /* keep empty placeholder to preserve layout when both off */
+                      <div className="video-placeholder empty" />
+                    ) : (
+                      /* Screen is off but camera might be on — show screen icon placeholder */
+                      <div className="video-placeholder">
+                        <ScreenShare size={28} />
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
+
+                {/* No name shown per request */}
               </div>
+            );
+          })}
+        </div>
+      </div>
 
-              {/* Divider */}
-              {<div className="stream-divider" />}
-
-              {/* Screen */}
-              <div className="stream-section">
-                {hasScreen ? (
-                  <div>
-                    <span
-                      className="video-icon-on-start fullscreen-toggle"
-                      onClick={() => {
-                        const videoEl = document.getElementById(
-                          `screen-${user._id}`
-                        );
-                        if (videoEl) {
-                          if (!document.fullscreenElement) {
-                            videoEl
-                              .requestFullscreen()
-                              .catch((err) =>
-                                console.error("Fullscreen error:", err)
-                              );
-                          } else {
-                            document.exitFullscreen();
-                          }
-                        }
-                      }}
-                      title="Toggle Fullscreen"
-                    >
-                      <Expand size={20} color="white" />
-                    </span>
-
-                    <video
-                      id={`screen-${user._id}`} // 🔐 give a unique ID per user
-                      autoPlay
-                      playsInline
-                      muted={isCurrentUser}
-                      ref={(el) => {
-                        if (el) el.srcObject = streamObj.screen;
-                      }}
-                      className="user-video"
-                    />
-                  </div>
-                ) : (
-                  <div className="video-placeholder">
-                    <ScreenShare size={28} />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <span className="username">
-              {isCurrentUser ? "You" : user.name}
+      {/* Self popup (floating) */}
+      <div
+        className={`${isFullSelf ? "self-popup" : "self-pop-small"}`}
+        role="dialog"
+        aria-label="Your streams"
+      >
+        <div className="self-header">
+          <User size={14} />
+          <strong style={{ marginLeft: 8 }}>You</strong>
+          {isFullSelf ? (
+            <LucideCross
+              onClick={() => {
+                setisFullSelf(false);
+              }}
+              style={{
+                marginLeft: 8,
+                cursor: "pointer",
+                color: "white",
+                transform: "rotate(45deg)",
+                position: "absolute",
+                right: 0,
+              }}
+              size={18}
+            />
+          ) : (
+            <LucideFullscreen
+              className="self-fullscreen-toggle"
+              onClick={() => {
+                setisFullSelf(true);
+              }}
+              size={14}
+              style={{
+                marginLeft: 8,
+                cursor: "pointer",
+                color: "white",
+              }}
+            />
+          )}
+        </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+          {/* Self camera box */}
+          <div className="self-video-box">
+            <span
+              className="video-icon-on-start fullscreen-toggle"
+              onClick={() => {
+                const el = document.getElementById("self-camera");
+                toggleFullscreen(el);
+              }}
+              title="Toggle Fullscreen"
+            >
+              <Expand size={16} color="white" />
             </span>
+            <video
+              id="self-camera"
+              ref={registerLocalVideoRef}
+              autoPlay
+              muted
+              playsInline
+              className="user-video self"
+            />
+
+            {/* Overlay placeholder shown only when local camera is off */}
+            {!localIsCameraOn && (
+              <div className="no-stream-overlay camera-overlay">
+                <Video size={28} />
+              </div>
+            )}
           </div>
-        );
-      })}
-    </div>
+
+          {/* Self screen box */}
+          <div className="self-video-box">
+            {isFullSelf && (
+              <span
+                className="video-icon-on-start fullscreen-toggle"
+                onClick={() => {
+                  const el = document.getElementById("self-screen");
+                  toggleFullscreen(el);
+                }}
+                title="Toggle Fullscreen"
+              >
+                <Expand size={16} color="white" />
+              </span>
+            )}
+
+            <video
+              id="self-screen"
+              ref={localScreenRef}
+              autoPlay
+              muted
+              playsInline
+              className="user-video self"
+            />
+
+            {/* Overlay placeholder shown only when local screen is off */}
+            {!localIsScreenSharing && (
+              <div className="no-stream-overlay screen-overlay">
+                <ScreenShare size={28} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
