@@ -1,3 +1,45 @@
+const { User } = require("../../model/User");
+
+// Store participants per room
+const participants = {}; // { roomId: { socketId: userData } }
+
+async function updateParticipants(io, roomId) {
+  if (!participants[roomId]) return;
+  console.log({ participants });
+  io.in(roomId).emit("participants-list", participants[roomId]);
+}
+
+async function handleUserJoin(socket, io, roomId, userId) {
+  try {
+    const userDoc = await User.findById(userId).lean();
+    if (!userDoc) {
+      console.warn(`User with id ${userId} not found`);
+      return;
+    }
+
+    if (!participants[roomId]) participants[roomId] = {};
+    participants[roomId][socket.id] = userDoc;
+
+    await updateParticipants(io, roomId);
+  } catch (err) {
+    console.error("Error in handleUserJoin:", err);
+  }
+}
+
+async function handleUserLeave(socket, io, roomId) {
+  try {
+    if (participants[roomId]) {
+      delete participants[roomId][socket.id];
+      if (Object.keys(participants[roomId]).length === 0) {
+        delete participants[roomId];
+      }
+    }
+    await updateParticipants(io, roomId);
+  } catch (err) {
+    console.error("Error in handleUserLeave:", err);
+  }
+}
+
 exports.meetingSocketHandling = (io) => {
   const rooms = {}; // { roomId: Set(socket.id) }
   const userMeta = {}; // { socket.id: { username, roomId } }
@@ -6,7 +48,7 @@ exports.meetingSocketHandling = (io) => {
   io.on("connection", (socket) => {
     console.log("New socket connected:", socket.id);
 
-    socket.on("join-room", ({ roomId, username }) => {
+    socket.on("join-room", async ({ roomId, username }) => {
       console.log(`User ${username} joined room ${roomId}`);
       userMeta[socket.id] = { username, roomId };
       socket.roomId = roomId;
@@ -17,7 +59,9 @@ exports.meetingSocketHandling = (io) => {
 
       // Send current media state of other users
 
-      const otherUsers = Array.from(rooms[roomId]).filter(
+      await handleUserJoin(socket, io, roomId, username);
+
+      const otherUsers = Array.from(rooms[roomId])?.filter(
         (id) => id !== socket.id
       );
       socket.emit("existing-users", { users: otherUsers });
@@ -57,6 +101,7 @@ exports.meetingSocketHandling = (io) => {
       mediaStates[state.socketId] = {
         isCameraOn: state.isCameraOn,
         isScreenSharing: state.isScreenSharing,
+        isMicOn: state.isMicOn,
       };
 
       socket.to(socket.roomId).emit("user-media-state", state);
@@ -75,14 +120,22 @@ exports.meetingSocketHandling = (io) => {
       socket.to(socket.roomId).emit("user-screen-update", data);
     });
 
+    socket.on("mic-toggled", ({ socketId, isMicOn }) => {
+      if (!mediaStates[socketId]) mediaStates[socketId] = {};
+      mediaStates[socketId].isMicOn = isMicOn;
+      console.log({ isMicOn });
+      socket.to(socket.roomId).emit("user-mic-update", { socketId, isMicOn });
+    });
+
     // handle explicit leave-room from clients
-    socket.on("leave-room", ({ roomId, username }) => {
+    socket.on("leave-room", async ({ roomId, username }) => {
       try {
         // Defensive checks
         if (!roomId) {
           console.warn("leave-room: missing roomId from", socket.id);
           return;
         }
+        await handleUserLeave(socket, io, roomId);
 
         // Remove from room set
         if (rooms[roomId]) {
@@ -123,11 +176,21 @@ exports.meetingSocketHandling = (io) => {
       }
     });
 
-    socket.on("disconnect", () => {
+    socket.on("send-message", ({ message, roomId, senderId, sender }) => {
+      io.in(roomId).emit("message", {
+        message,
+        roomId,
+        senderId,
+        sender,
+      });
+    });
+
+    socket.on("disconnect", async () => {
       const meta = userMeta[socket.id];
       if (!meta) return;
 
       const { roomId } = meta;
+      await handleUserLeave(socket, io, roomId);
       rooms[roomId]?.delete(socket.id);
 
       if (rooms[roomId]?.size === 0) delete rooms[roomId];

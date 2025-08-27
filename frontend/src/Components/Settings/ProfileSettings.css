@@ -15,17 +15,32 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  color: #334155;
+  color: #f1f5f9;
+  /* Light text for dark mode */
+}
+
+.profile-form input[type="file"] {
+  width: 100%;
 }
 
 .profile-form input,
 .profile-form textarea {
   margin-top: 6px;
   padding: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #334155;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: #0f172a;
+  /* Dark background for inputs */
+  color: #f8fafc;
+  /* Light text inside inputs */
+}
+
+.profile-form input:focus,
+.profile-form textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
 .profile-form textarea {
@@ -44,7 +59,8 @@
   height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #94a3b8;
+  border: 2px solid #475569;
+  /* Dark border for images */
 }
 
 .save-btn {
@@ -62,6 +78,7 @@
   background: linear-gradient(to right, #4f46e5, #4338ca);
 }
 
+/* 📱 Mobile adjustments */
 @media (max-width: 640px) {
   .image-section {
     flex-direction: column;
@@ -71,5 +88,28 @@
   .profile-image {
     width: 60px;
     height: 60px;
+  }
+}
+
+/* 📱 Ultra small screens - 200px */
+@media (max-width: 200px) {
+  .profile-form {
+    gap: 10px;
+  }
+
+  .profile-form input,
+  .profile-form textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .save-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .profile-image {
+    width: 50px;
+    height: 50px;
   }
 }

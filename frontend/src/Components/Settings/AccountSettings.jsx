@@ -62,7 +62,7 @@ const AccountSettings = () => {
 
   return (
     <div className="account-settings">
-      <h3>🔐 Account Settings</h3>
+      <h3>Account Settings</h3>
       <form className="account-form" onSubmit={handleSubmit}>
         {/* Email Section */}
         <label>

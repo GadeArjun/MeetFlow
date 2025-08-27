@@ -1,8 +1,9 @@
 import React from "react";
-import "./FullScreenLoader.css"; // Import the CSS file
-import desklyLogo from "../../assets/images/logo.png"; // Import your logo (adjust path/name)
+import "./FullScreenLoader.css";
+import meetFlowLogo from "../../assets/images/name_logo.png";
+import meetFlowFavicon from "../../assets/images/favicon.png";
 
-const FullScreenLoader = () => {
+const FullScreenLoader = ({ message = "Loading MeetFlow..." }) => {
   return (
     <div
       className="fullscreen-loader-overlay"
@@ -11,16 +12,23 @@ const FullScreenLoader = () => {
       role="status"
     >
       <div className="loader-container">
-        {/* Deskly Logo */}
-        <img src={desklyLogo} alt="Deskly Logo" className="loader-logo" />
-
-        {/* Super Circular Loader (Chosen from previous options) */}
-        <div className="super-circular-loader">
-          <div className="loader-inner-circle"></div>
-          <div className="loader-outer-ring"></div>
-          <div className="loader-fill-arc"></div>
+        <div className="loader-logo-group">
+          {/* Rotating Favicon */}
+          <div className="logo-spinner">
+            <img
+              src={meetFlowFavicon}
+              alt="MeetFlow Icon"
+              className="loader-favicon"
+            />
+          </div>
+          {/* Static Name Logo */}
+          <img
+            src={meetFlowLogo}
+            alt="MeetFlow Logo"
+            className="loader-logo-name"
+          />
         </div>
-        <p className="loading-text-super">Loading Deskly...</p>
+        <p className="loading-text">{message}</p>
       </div>
     </div>
   );

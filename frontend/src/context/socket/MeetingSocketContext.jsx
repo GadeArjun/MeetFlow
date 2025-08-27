@@ -18,19 +18,27 @@ export const MeetingSocketProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [joined, setJoined] = useState(false);
   const [remoteStreams, setRemoteStreams] = useState({}); // { socketId: { camera, screen } }
+  const [participants, setParticipants] = useState([]);
+  const [messageSenderName, setMessageSenderName] = useState("");
+  const [userJoinLeave, setUserJoinLeave] = useState({});
 
   const localVideoRef = useRef();
   const localScreenRef = useRef();
+  const audioStreamRef = useRef(null);
+
   const initialStream = useRef();
   const pcRef = useRef({});
   const localStreamRef = useRef(null);
   const screenStreamRef = useRef(null);
 
   const [isCameraOn, setIsCameraOn] = useState(true);
-  const [isMicOn, setIsMicOn] = useState(true);
+  const [isMicOn, setIsMicOn] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [remoteMediaStates, setRemoteMediaStates] = useState({});
   const remoteMediaStatesRef = useRef({});
+
+  const [messages, setMessages] = useState([]);
+
   // --- Socket Events ---
   useEffect(() => {
     socket.on("existing-users", async ({ users }) => {
@@ -84,11 +92,11 @@ export const MeetingSocketProvider = ({ children }) => {
     // initial states from existing users
     socket.on(
       "user-media-state",
-      ({ socketId, isCameraOn, isScreenSharing }) => {
+      ({ socketId, isCameraOn, isScreenSharing, isMicOn }) => {
         setRemoteMediaStates((prev) => {
           const updated = {
             ...prev,
-            [socketId]: { isCameraOn, isScreenSharing },
+            [socketId]: { isCameraOn, isScreenSharing, isMicOn },
           };
           remoteMediaStatesRef.current = updated;
           return updated;
@@ -126,9 +134,65 @@ export const MeetingSocketProvider = ({ children }) => {
       });
     });
 
+    socket.on("user-mic-update", ({ socketId, isMicOn }) => {
+      setRemoteMediaStates((prev) => {
+        const updated = {
+          ...prev,
+          [socketId]: {
+            ...prev[socketId],
+            isMicOn,
+          },
+        };
+
+        remoteMediaStatesRef.current = updated;
+        return updated;
+      });
+    });
+
     socket.on("all-users-media-state", (states) => {
       setRemoteMediaStates(states); // Directly set the map
       remoteMediaStatesRef.current = states; // Update the reference
+    });
+
+    socket.on("participants-list", (users) => {
+      const usersObj = Object.values(users); // convert object → array
+      setParticipants((prev) => {
+        const prevIds = Object.values(prev).map((u) => u._id);
+        const newIds = usersObj.map((u) => u._id);
+
+        // joined users
+        usersObj.forEach((u) => {
+          if (!prevIds.includes(u._id)) {
+            console.log(`${u.name} joined`);
+            setUserJoinLeave({
+              status: "joined",
+              username: u.name,
+            });
+            // showToast({ message: `${u.name} joined`, type: "join" });
+          }
+        });
+
+        // left users
+        Object.values(prev).forEach((u) => {
+          if (!newIds.includes(u._id)) {
+            setUserJoinLeave({
+              status: "leave",
+              username: u.name,
+            });
+            console.log(`${u.name} left`);
+            // showToast({ message: `${u.name} left`, type: "leave" });
+          }
+        });
+
+        return users; // update state
+      });
+    });
+
+    socket.on("message", ({ message, roomId, senderId, sender }) => {
+      console.log({ message, roomId, senderId, sender });
+      setMessageSenderName(sender);
+      setMessages((prev) => [...prev, { message, roomId, senderId, sender }]);
+      // setMessages((prevMessages) => [...prevMessages, message]);
     });
   }, []);
 
@@ -143,27 +207,55 @@ export const MeetingSocketProvider = ({ children }) => {
     }
   };
 
-  const joinRoom = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: isCameraOn,
-      audio: isMicOn,
-    });
-
-    localStreamRef.current = stream;
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = stream;
+  const registerLocalScreenRef = (el) => {
+    localScreenRef.current = el;
+    if (el) {
+      // attach existing stream if any
+      if (screenStreamRef.current) {
+        el.srcObject = screenStreamRef.current;
+      }
+      // optional: ensure muted/playsInline handled by DOM element props
     }
-    socket.emit("join-room", { roomId, username });
+  };
 
-    socket.emit("initial-media-state", {
-      socketId: socket.id,
-      isCameraOn,
-      isScreenSharing,
-    });
+  const joinRoom = async (meetingId, username_id) => {
+    try {
+      setIsCameraOn(true);
+      // const stream = new MediaStream();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
 
-    setJoined(true);
-    toggleCamera();
-    toggleMic();
+      console.log({ isCameraOn, stream });
+
+      localStreamRef.current = stream;
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = stream;
+      }
+
+      setUsername(username_id || roomId);
+      setRoomId(meetingId || username);
+
+      socket.emit("join-room", {
+        roomId: meetingId || roomId,
+        username: username_id || username,
+      });
+
+      socket.emit("initial-media-state", {
+        socketId: socket.id,
+        isCameraOn: true,
+        isScreenSharing,
+        isMicOn,
+      });
+
+      setJoined(true);
+    } catch (error) {
+      console.log(`Error while joining the room ${error}`);
+      alert(
+        "Permission Denied Please Check the Permissions Of Your Camera And Try Again"
+      );
+      window.location.href = "/meetings";
+    }
   };
 
   // --- Create Peer ---
@@ -186,6 +278,13 @@ export const MeetingSocketProvider = ({ children }) => {
       });
     }
 
+    // send mic local
+    if (audioStreamRef.current) {
+      audioStreamRef.current.getTracks().forEach((track) => {
+        pc.addTrack(track, audioStreamRef.current); // mic
+      });
+    }
+
     pc.ontrack = async ({ track, streams: [stream] }) => {
       // const remoteState = await waitForRemoteMediaState(socketId);
       const remoteState = remoteMediaStatesRef.current[socketId];
@@ -195,10 +294,16 @@ export const MeetingSocketProvider = ({ children }) => {
       }
       const isScreen = remoteState?.isScreenSharing;
       const isCamera = remoteState?.isCameraOn;
-      console.log({ isCamera, isScreen });
+      const isMicOn = remoteState?.isMicOn; // ✅ add mic state
+
+      console.log({ isCamera, isScreen, isMicOn });
 
       setRemoteStreams((prev) => {
-        const existing = prev[socketId] || { camera: null, screen: null };
+        const existing = prev[socketId] || {
+          camera: null,
+          screen: null,
+          audio: null,
+        };
         const updated = { ...existing };
 
         if (isScreen) {
@@ -212,6 +317,12 @@ export const MeetingSocketProvider = ({ children }) => {
           updated.camera = updated.camera?.active ? updated.camera : stream;
         } else {
           updated.camera = null;
+        }
+
+        if (isMicOn) {
+          updated.audio = updated.audio?.active ? updated.audio : stream;
+        } else {
+          updated.audio = null;
         }
 
         return {
@@ -305,17 +416,58 @@ export const MeetingSocketProvider = ({ children }) => {
     });
   };
 
-  // --- Toggle Mic ---
-  const toggleMic = () => {
-    console.log("toggleMic");
-    const audioTrack = localStreamRef.current?.getAudioTracks()[0];
-    if (audioTrack) {
-      audioTrack.enabled = !audioTrack.enabled;
-      setIsMicOn(audioTrack.enabled);
+  // --- Toggle Screen Share ---
+
+  const toggleMic = async () => {
+    if (isMicOn && audioStreamRef.current) {
+      // 🔇 Turn OFF mic
+      audioStreamRef.current.getTracks().forEach((track) => track.stop());
+      audioStreamRef.current = null;
+
+      // Remove from peers
+      Object.entries(pcRef.current).forEach(([socketId, peer]) => {
+        const sender = peer.getSenders().find((s) => s.track?.kind === "audio");
+        if (sender) peer.removeTrack(sender);
+        renegotiate(peer, socketId);
+      });
+
+      setIsMicOn(false);
+    } else {
+      // 🎤 Turn ON mic
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
+        audioStreamRef.current = stream;
+        const audioTrack = stream.getAudioTracks()[0];
+
+        // Add/replace in peers
+        Object.entries(pcRef.current).forEach(([socketId, peer]) => {
+          const sender = peer
+            .getSenders()
+            .find((s) => s.track?.kind === "audio");
+          if (sender) sender.replaceTrack(audioTrack);
+          else peer.addTrack(audioTrack, audioStreamRef.current);
+
+          renegotiate(peer, socketId);
+        });
+
+        setIsMicOn(true);
+      } catch (err) {
+        console.error("Error enabling mic:", err);
+      }
     }
+
+    socket.emit("mic-toggled", {
+      socketId: socket.id,
+      isMicOn: !isMicOn,
+    });
   };
 
-  // --- Toggle Screen Share ---
   const toggleScreenShare = async () => {
     if (isScreenSharing) {
       screenStreamRef.current?.getTracks().forEach((track) => {
@@ -343,7 +495,9 @@ export const MeetingSocketProvider = ({ children }) => {
         });
       });
 
-      localScreenRef.current.srcObject = screenStream;
+      if (localScreenRef.current) {
+        localScreenRef.current.srcObject = screenStream;
+      }
       setIsScreenSharing(true);
 
       screenStream.getVideoTracks()[0].onended = () => {
@@ -362,8 +516,14 @@ export const MeetingSocketProvider = ({ children }) => {
     });
   };
 
+  const sendMessage = ({ message, senderId, sender }) => {
+    console.log({ message, roomId, senderId, sender });
+    socket.emit("send-message", { message, roomId, senderId, sender });
+  };
+
   const leaveMeeting = async () => {
     try {
+      console.log("leave meeting");
       // 1️⃣ Stop local camera/mic tracks
       localStreamRef.current?.getTracks().forEach((track) => track.stop());
       localStreamRef.current = null;
@@ -371,6 +531,10 @@ export const MeetingSocketProvider = ({ children }) => {
       // 2️⃣ Stop screen share tracks
       screenStreamRef.current?.getTracks().forEach((track) => track.stop());
       screenStreamRef.current = null;
+
+      // Stop mic
+      audioStreamRef.current?.getTracks().forEach((track) => track.stop());
+      audioStreamRef.current = null;
 
       // 3️⃣ Close all peer connections
       Object.values(pcRef.current).forEach((pc) => pc.close());
@@ -426,6 +590,15 @@ export const MeetingSocketProvider = ({ children }) => {
         setIsMicOn,
         registerLocalVideoRef,
         leaveMeeting,
+        socket,
+        participants,
+        registerLocalScreenRef,
+        sendMessage,
+        messages,
+        setMessageSenderName,
+        messageSenderName,
+        setUserJoinLeave,
+        userJoinLeave,
       }}
     >
       {children}

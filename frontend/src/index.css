@@ -3,18 +3,22 @@
 ----------------------------------- */
 
 :root {
-  --primary-color: #4f46e5; /* Indigo 600 */
-  --primary-gradient: linear-gradient(
-    to right,
-    #3b82f6,
-    #6366f1
-  ); /* blue → indigo */
-  --text-color: #1e293b; /* Slate 800 */
-  --bg-color: #f9fafb; /* Light background */
+  --primary-color: #4f46e5;
+  /* Indigo 600 */
+  --primary-gradient: linear-gradient(to right,
+      #3b82f6,
+      #6366f1);
+  /* blue → indigo */
+  --text-color: #1e293b;
+  /* Slate 800 */
+  --bg-color: #131c2f;
+  /* Light background */
   --link-color: #4f46e5;
   --hover-link-color: #4338ca;
-  --muted-text: #64748b; /* Slate 500 */
-  --border-color: #e2e8f0; /* Light border */
+  --muted-text: #64748b;
+  /* Slate 500 */
+  --border-color: #e2e8f0;
+  /* Light border */
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   --radius: 0.75rem;
   --transition: 0.3s ease-in-out;
@@ -237,15 +241,19 @@ select:focus {
   h1 {
     font-size: 2rem;
   }
+
   h2 {
     font-size: 1.75rem;
   }
+
   h3 {
     font-size: 1.5rem;
   }
+
   h4 {
     font-size: 1.25rem;
   }
+
   h5 {
     font-size: 1.125rem;
   }

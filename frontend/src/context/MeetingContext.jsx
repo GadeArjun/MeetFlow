@@ -1,10 +1,18 @@
+// src/context/MeetingContext.jsx
 import axios from "axios";
-import React, { createContext, useState, useEffect } from "react"; // Import useState
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { UserContext } from "./UserContext";
 
 const MeetingContext = createContext();
 
 export const MeetingContextProvider = ({ children }) => {
-  const [meetings, setMeetings] = useState([]);
+  const [meetingsData, setMeetingsData] = useState({
+    scheduledMeetings: [],
+    ongoingMeetings: [],
+    pastMeetings: [],
+    analytics: null,
+  });
+  const { token } = useContext(UserContext);
   const [meetingContextLoading, setMeetingContextLoading] = useState(true);
 
   const fetchMeetings = async () => {
@@ -19,7 +27,15 @@ export const MeetingContextProvider = ({ children }) => {
         }
       );
 
-      setMeetings(response.data.meetings || []);
+      const data = response.data;
+      setMeetingsData({
+        scheduledMeetings: data.scheduledMeetings || [],
+        ongoingMeetings: data.ongoingMeetings || [],
+        pastMeetings: data.pastMeetings || [],
+        analytics: data.analytics || null,
+      });
+
+      console.log("Fetched meetings:", data);
     } catch (error) {
       console.error("Failed to fetch meetings:", error);
     } finally {
@@ -29,24 +45,20 @@ export const MeetingContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchMeetings();
-  }, []);
+  }, [token]);
 
-  // Provide the context values
   const contextValue = {
-    setMeetings,
-    meetings,
+    ...meetingsData, // gives direct access to scheduledMeetings, ongoingMeetings, pastMeetings, analytics
+    fetchMeetings, // allow manual refresh
     meetingContextLoading,
-    setMeetingContextLoading,
+    setMeetingsData,
   };
 
   return (
     <MeetingContext.Provider value={contextValue}>
-      {" "}
-      {/* Correct prop name is 'value' */}
       {children}
     </MeetingContext.Provider>
   );
 };
 
-// Export MeetingContext for consumption by other components
 export { MeetingContext };

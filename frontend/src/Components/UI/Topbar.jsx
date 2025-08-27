@@ -3,7 +3,7 @@ import "./Topbar.css";
 import { Menu, User } from "lucide-react";
 import { UserContext } from "../../context/UserContext";
 
-const Topbar = ({ toggleSidebar }) => {
+const Topbar = ({ toggleSidebar, sidebarOpen }) => {
   const { user } = useContext(UserContext);
   const [imageError, setImageError] = useState(false);
 
@@ -11,7 +11,10 @@ const Topbar = ({ toggleSidebar }) => {
 
   return (
     <div className="topbar">
-      <button onClick={toggleSidebar} className="hamburger-btn">
+      <button
+        onClick={() => toggleSidebar(!sidebarOpen)}
+        className="hamburger-btn"
+      >
         <Menu size={22} />
       </button>
 

@@ -93,7 +93,7 @@ const ProfileSettings = () => {
 
   return (
     <div className="profile-settings">
-      <h3>👤 Profile Settings</h3>
+      <h3>Profile Settings</h3>
       <p>Update your personal information and profile picture.</p>
 
       <form onSubmit={handleSubmit} className="profile-form">

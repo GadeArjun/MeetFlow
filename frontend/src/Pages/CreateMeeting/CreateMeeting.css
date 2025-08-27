@@ -3,15 +3,16 @@
   max-width: 800px;
   margin: 40px auto;
   padding: 40px 30px;
-  background: #ffffff;
+  background: linear-gradient(145deg, #0e0f1a, #15172b);
   border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease-in-out;
+  color: #eaf6ff;
 }
 
 .create-meeting-container h2 {
   margin-bottom: 24px;
-  color: #1e293b;
+  color: #ffffff;
   font-size: 28px;
   font-weight: 700;
   text-align: center;
@@ -26,26 +27,34 @@
 
 .meeting-form label {
   font-weight: 600;
-  color: #334155;
+  color: #cbd5e1;
   font-size: 15px;
   margin-bottom: 4px;
+}
+
+.meeting-form textarea {
+  min-width: 100%;
+  min-height: 100px;
+  max-width: 100%;
+  max-height: 100px;
 }
 
 .meeting-form input,
 .meeting-form textarea {
   padding: 12px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #334155;
   border-radius: 10px;
   font-size: 15px;
   outline: none;
-  background: #f9fafb;
+  background: #1e293b;
+  color: #f8fafc;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .meeting-form input:focus,
 .meeting-form textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: #9f7bff;
+  box-shadow: 0 0 0 3px rgba(159, 123, 255, 0.25);
 }
 
 /* Date + Time Row */
@@ -55,14 +64,14 @@
   gap: 16px;
 }
 
-.meeting-form .row > div {
+.meeting-form .row>div {
   flex: 1 1 30%;
   min-width: 120px;
 }
 
 /* Submit Button */
 .create-button {
-  background: linear-gradient(to right, #4f46e5, #6366f1);
+  background: linear-gradient(to right, #7c3aed, #9f7bff);
   color: #fff;
   border: none;
   padding: 14px;
@@ -75,24 +84,24 @@
 }
 
 .create-button:hover {
-  background: linear-gradient(to right, #4338ca, #4f46e5);
+  background: linear-gradient(to right, #6d28d9, #7c3aed);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(159, 123, 255, 0.3);
 }
 
 /* Link Output Box */
 .meeting-link-box {
   margin-top: 24px;
-  background: #f0f4f8;
+  background: #1e293b;
   padding: 20px;
   border-radius: 14px;
   text-align: center;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .meeting-link-box h4 {
   margin-bottom: 8px;
-  color: #1d4ed8;
+  color: #9f7bff;
   font-size: 18px;
 }
 
@@ -101,15 +110,15 @@
   margin-top: 10px;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #94a3b8;
-  background: white;
+  border: 1px solid #475569;
+  background: #0f172a;
   font-weight: 500;
-  color: #0f172a;
+  color: #f8fafc;
   font-size: 15px;
 }
 
 .error-text {
-  color: #ef4444;
+  color: #f87171;
   font-weight: 500;
   margin-bottom: 15px;
 }
@@ -122,7 +131,7 @@
 
 .email-row span {
   font-weight: 600;
-  color: #334155;
+  color: #cbd5e1;
   min-width: 20px;
 }
 
@@ -134,13 +143,13 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #ef4444;
+  color: #f87171;
 }
 
 .add-email-btn {
   background: transparent;
-  border: 1px dashed #3b82f6;
-  color: #3b82f6;
+  border: 1px dashed #9f7bff;
+  color: #9f7bff;
   padding: 8px 12px;
   border-radius: 8px;
   font-weight: 500;
@@ -158,8 +167,10 @@
 .link-actions input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #334155;
   border-radius: 8px;
+  background: #1e293b;
+  color: #f8fafc;
 }
 
 .buttons {
@@ -182,12 +193,12 @@
 }
 
 .copy-btn {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: #334155;
+  color: #e2e8f0;
 }
 
 .copy-btn:hover {
-  background: #cbd5e1;
+  background: #475569;
 }
 
 .whatsapp-btn {
@@ -202,10 +213,7 @@
 
 /* ✅ Responsive Adjustments */
 @media (max-width: 768px) {
-  .create-meeting-container {
-    padding: 24px 20px;
-    margin: 20px;
-  }
+
 
   .meeting-form .row {
     flex-direction: column;
@@ -218,5 +226,91 @@
 
   .create-button {
     font-size: 15px;
+  }
+
+  .email-row {
+    gap: 1px;
+  }
+}
+
+/* ✅ Extra Small Devices: 200px and below */
+@media (max-width: 200px) {
+  .create-meeting-container {
+    padding: 16px 10px;
+    margin: 10px;
+    border-radius: 12px;
+  }
+
+  .create-meeting-container h2 {
+    font-size: 16px;
+  }
+
+  .meeting-form {
+    gap: 12px;
+  }
+
+  .meeting-form label {
+    font-size: 12px;
+  }
+
+  .meeting-form input,
+  .meeting-form textarea {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .meeting-form .row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .meeting-form .row>div {
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  .create-button {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .meeting-link-box {
+    padding: 12px;
+  }
+
+  .meeting-link-box h4 {
+    font-size: 14px;
+  }
+
+  .meeting-link-box input {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .copy-btn,
+  .whatsapp-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+    justify-content: center;
+  }
+
+  .email-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .email-row span {
+    font-size: 12px;
+  }
+
+  .add-email-btn {
+    font-size: 12px;
+    padding: 6px 8px;
   }
 }

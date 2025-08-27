@@ -3,13 +3,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background: #ffffff;
+  background: linear-gradient(135deg, #0a0f1a, #121826);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(0, 200, 255, 0.2);
   margin-bottom: 20px;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 11;
 }
 
 /* Hamburger Button */
@@ -17,16 +18,20 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #334155;
+  color: #8be9ff;
+  /* Cyan glow accent */
   padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .hamburger-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 255, 255, 0.1);
   border-radius: 8px;
+  color: #9f7bff;
+  /* Neon purple on hover */
 }
 
 /* Avatar */
@@ -35,7 +40,8 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #e2e8f0;
+  border: 2px solid rgba(0, 200, 255, 0.4);
+  box-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
 }
 
 /* Top Right Section */

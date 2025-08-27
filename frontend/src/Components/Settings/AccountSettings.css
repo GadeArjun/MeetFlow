@@ -15,16 +15,27 @@
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  color: #334155;
+  color: #f1f5f9;
+  /* Light text for dark mode */
 }
 
 .account-form input {
   margin-top: 6px;
   padding: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #334155;
+  /* Darker border */
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: #0f172a;
+  /* Dark input background */
+  color: #f8fafc;
+  /* Light input text */
+}
+
+.account-form input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
 .save-btn {
@@ -56,7 +67,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #334155;
+  /* Dark mode border */
 }
 
 .linked-accounts button {
@@ -66,8 +78,50 @@
   color: white;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.linked-accounts button:hover {
+  background: #dc2626;
 }
 
 .linked-accounts span {
-  color: #64748b;
+  color: #94a3b8;
+  /* Lighter gray for dark mode */
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 640px) {
+  .save-btn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
+/* 📱 Ultra small screens - 200px */
+@media (max-width: 200px) {
+  .account-form {
+    gap: 10px;
+  }
+
+  .account-form input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .save-btn {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .linked-accounts li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .linked-accounts button {
+    padding: 5px 8px;
+    font-size: 13px;
+  }
 }

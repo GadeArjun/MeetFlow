@@ -3,6 +3,7 @@ const http = require("http");
 require("dotenv").config();
 const { Server } = require("socket.io");
 const { connectDB } = require("./utils/db");
+const path = require("path");
 
 // routers
 const userRouter = require("./router/user");
@@ -13,9 +14,17 @@ const app = express();
 // use of routers and middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+// Serve React build from public/dist
+app.use(express.static(path.join(__dirname, "public", "dist")));
 
 app.use("/api/user", userRouter);
 app.use("/api/meeting", meetingRouter);
+
+// Always return index.html for SPA routes
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+});
 
 const server = http.createServer(app);
 

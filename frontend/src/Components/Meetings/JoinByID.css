@@ -1,81 +1,101 @@
+/* Using CSS variables for a consistent theme from the main Meetings page */
+:root {
+  --color-primary: #4f46e5;
+  --color-secondary: #8b5cf6;
+  --color-background-light: #f3f4f6;
+  --color-background-dark: #1f2937;
+  --color-card-dark: #2a3447;
+  --color-text-dark: #111827;
+  --color-text-light: #ffffff;
+  --color-text-muted: #d1d5db;
+  --color-border: #374151;
+  --font-family: 'Inter', sans-serif;
+}
+
 .join-by-id-card {
-  background: #ffffff;
+  background: var(--color-background-dark);
   border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   width: 100%;
   max-width: 400px;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.join-by-id-card h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: #1e293b;
+.join-by-id-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 }
 
-.join-by-id-card input[type="text"],
-.join-by-id-card input[type="password"] {
-  padding: 12px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.meeting-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
   font-size: 16px;
   outline: none;
-  transition: border 0.3s;
+  background: var(--color-card-dark);
+  color: var(--color-text-light);
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-.join-by-id-card input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+.meeting-input::placeholder {
+  color: var(--color-text-muted);
 }
 
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.checkbox-row label {
-  font-size: 14px;
-  color: #475569;
+.meeting-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
 }
 
 .join-button {
-  background: linear-gradient(to right, #3b82f6, #6366f1);
+  width: 100%;
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
   color: white;
   border: none;
-  padding: 12px 16px;
+  padding: 14px 20px;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .join-button:hover {
-  transform: scale(1.03);
-  background: linear-gradient(to right, #2563eb, #4f46e5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.join-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive adjustments */
 @media (max-width: 500px) {
   .join-by-id-card {
-    padding: 18px;
-    gap: 12px;
+    padding: 24px;
+    gap: 16px;
   }
 
-  .join-by-id-card h3 {
-    font-size: 18px;
+  .card-title {
+    font-size: 22px;
   }
 
-  .join-by-id-card input {
-    font-size: 15px;
-  }
-
+  .meeting-input,
   .join-button {
     font-size: 15px;
-    padding: 10px 14px;
   }
 }

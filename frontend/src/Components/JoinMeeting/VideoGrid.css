@@ -1,72 +1,90 @@
-/* === Grid layout for remote participants === */
-.video-grid {
-  padding: 1rem;
-  width: 100%;
+/* === Root theme variables === */
+:root {
+  --color-primary: #4f46e5;
+  --color-secondary: #8b5cf6;
+  --color-background-dark: #1f2937;
+  --color-card-dark: #2a3447;
+  --color-text-light: #ffffff;
+  --color-text-muted: #9ca3af;
+  --color-border-subtle: #374151;
+  --color-border-divider: #4b5563;
+  --color-hover-card: #374151;
+  --font-family: 'Inter', sans-serif;
 }
 
+/* === Main grid container === */
+.video-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  padding: 16px;
+  background-color: var(--color-background-dark);
+  border-radius: 16px;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  overflow-y: auto;
+  /* Allow scrolling if content too tall */
+  box-sizing: border-box;
+}
+
+/* === Responsive participant grid === */
 .other-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
+  width: 100%;
+  max-width: 1400px;
 }
 
-/* === Each remote participant tile === */
-/* === Each remote participant tile === */
+/* === Video tile === */
 .video-tile {
   position: relative;
-  background: #111827; /* dark gray */
-  border-radius: 8px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  /* Keeps videos proportional */
+  background-color: var(--color-card-dark);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  /* Ensures video never overflows */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  /* Added fixed size */
-  width: 320px; /* fixed width */
-  height: 200px; /* fixed height */
-  min-width: 240px; /* prevents too small on smaller screens */
+.video-tile:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
 
+/* === Dual stream container === */
+.dual-stream-container {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-/* Menu button in top-right */
-.tile-menu-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 3;
-  background: rgba(0, 0, 0, 0.4);
-  border: none;
-  padding: 4px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: white;
-}
-
-.tile-menu-btn:hover {
-  background: rgba(0, 0, 0, 0.65);
-}
-
-/* === Split container for camera + screen === */
-.dual-stream-container.split {
-  display: flex;
-  gap: 4px;
-  align-items: stretch;
+  width: 100%;
   height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
+.dual-stream-container.split {
+  flex-direction: row;
+}
+
+/* === Individual stream section === */
 .stream-section {
   flex: 1;
   position: relative;
-  min-height: 140px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background-dark);
   overflow: hidden;
+  /* No overflow from videos */
 }
 
 .stream-divider {
-  width: 4px;
-  background: transparent;
+  width: 1px;
+  background-color: var(--color-border-divider);
 }
 
 /* === Video element === */
@@ -74,7 +92,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* No stretching, fills space */
   display: block;
+  background: black;
 }
 
 /* === Fullscreen toggle icon === */
@@ -94,151 +114,126 @@
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* === Placeholder icons === */
+/* === Placeholder (when camera/screen off) === */
 .video-placeholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #bfc7d6;
-  font-size: 1rem;
-  height: 100%;
-  width: 100%;
+  color: var(--color-text-muted);
+  background-color: var(--color-card-dark);
 }
 
 .video-placeholder.single-user {
-  color: #9ca3af; /* lighter gray */
+  font-size: 34px;
 }
 
-.video-placeholder.empty {
-  background: transparent;
-}
-
-.self-pop-small {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-
-  /*  */
-  position: fixed;
-  right: 20px;
-  top: 60px;
-  background: rgba(17, 24, 39, 0.95); /* dark w/ transparency */
-  padding: 12px;
-  color: white;
-  z-index: 9999;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
-}
-
-/* === Self popup === */
-.self-popup {
-  position: fixed;
-  right: 20px;
-  top: 60px;
-  width: 360px;
-  max-width: 90vw;
-  background: rgba(17, 24, 39, 0.95); /* dark w/ transparency */
-  border-radius: 12px;
-  padding: 12px;
-  color: white;
-  z-index: 9999;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
-}
-
-.self-header {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  color: #d1d5db;
-  position: relative;
-}
-.self-fullscreen-toggle {
+/* === Participant name === */
+.participant-name {
   position: absolute;
-  top: -2%;
-  right: 2%;
-  height: 50px;
-  width: 23px;
-  z-index: 100000;
-}
-
-/* Each self video box (camera/screen) */
-.self-video-box {
-  position: relative;
-  flex: 1;
-  height: 110px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.user-video.self {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Placeholder overlay for local video */
-.no-stream-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #cfd8e6;
+  bottom: 8px;
+  left: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--color-text-light);
+  font-family: var(--font-family);
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  z-index: 10;
   pointer-events: none;
 }
 
-/* Specific color cues for placeholders */
-.camera-overlay {
-  color: #22c55e; /* green */
-}
-
-.screen-overlay {
-  color: #3b82f6; /* blue */
-}
-
-/* === Each remote participant tile === */
-.video-tile {
-  position: relative;
-  background: #111827; /* dark gray */
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-
-  /* Fixed size for larger screens */
-  width: 320px;
-  height: 200px;
-  min-width: 240px;
-
+/* === Tile menu button === */
+.tile-menu-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 10;
 }
 
-/* === Responsive grid === */
-.other-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  justify-content: center; /* center tiles when extra space */
+.tile-menu-btn:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* Medium screens: slightly smaller tiles */
+/* === Special card when both camera and screen are off === */
+.both-off-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.both-off-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* 🎨 Fixed Gradient Pool (5 colors cycling) */
+.both-off-card:nth-child(5n + 1) {
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  /* Indigo → Light Blue */
+}
+
+.both-off-card:nth-child(5n + 2) {
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  /* Orange → Pink */
+}
+
+.both-off-card:nth-child(5n + 3) {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  /* Teal → Green */
+}
+
+.both-off-card:nth-child(5n + 4) {
+  background: linear-gradient(135deg, #fc466b, #3f5efb);
+  /* Pink → Blue */
+}
+
+.both-off-card:nth-child(5n + 5) {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+  /* Orange → Yellow */
+}
+
+/* === Responsive adjustments === */
 @media (max-width: 768px) {
-  .video-tile {
-    width: 280px;
-    height: 180px;
+  .other-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .participant-name {
+    font-size: 12px;
+    padding: 2px 6px;
   }
 }
 
-/* Small screens: take almost full width */
 @media (max-width: 480px) {
-  .video-tile {
-    width: 92vw;
-    height: auto; /* let height adjust naturally */
-    min-width: unset;
+  .video-grid {
+    padding: 8px;
+  }
+
+  .other-grid {
+    gap: 8px;
   }
 }

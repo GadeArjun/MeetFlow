@@ -10,10 +10,8 @@ import Landing from "./Pages/Landing/Landing";
 import Meetings from "./Pages/Meetings/Meetings";
 import MainLayout from "./layouts/MainLayout";
 import CreateMeeting from "./Pages/CreateMeeting/CreateMeeting";
-import RemoteAccess from "./Pages/RemoteAccess/RemoteAccess";
 import Settings from "./Pages/Settings/Settings";
 import JoinMeeting from "./Pages/JoinMeeting/JoinMeeting";
-import RemoteController from "./Pages/RemoteController/RemoteController";
 import { UserContext } from "./context/UserContext";
 import FullScreenLoader from "./Pages/Loading/FullScreenLoader";
 import ErrorPage from "./Pages/ErrorPage/ErrorPage";
@@ -29,7 +27,7 @@ function App() {
       return;
     }
     if (!user) {
-      navigate("/login");
+      navigate("/");
     }
   }, [user, userContextLoading]);
 
@@ -68,14 +66,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/remote-access"
-          element={
-            <MainLayout>
-              <RemoteAccess />
-            </MainLayout>
-          }
-        />
+        
 
         <Route
           path="/settings"
@@ -86,10 +77,7 @@ function App() {
           }
         />
         <Route path="/join-meeting/:meetingID" element={<JoinMeeting />} />
-        <Route
-          path="/remote-controller"
-          element={<RemoteController targetDevice={"mobile"} />}
-        />
+        
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>

@@ -1,3 +1,37 @@
+/* .sidebar-open .main-content {
+  margin-left: 220px;
+  transition: margin 0.3s ease;
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: 60px;
+  transition: margin 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  height: 100vh;
+  
+  padding: 20px;
+  padding-left: 70px;
+  overflow-y: auto;
+  background-color: #f0f4ff;
+}
+
+@media (max-width: 786px) {
+  .sidebar-collapsed .main-content {
+    margin-left: 0px;
+    transition: margin 0.3s ease;
+    padding-left: 20px;
+  }
+  .sidebar-open .main-content {
+    margin-left: 0;
+    transition: margin 0.3s ease;
+    padding-left: 20px;
+  }
+} */
+
+
 .sidebar-open .main-content {
   margin-left: 220px;
   transition: margin 0.3s ease;
@@ -10,20 +44,48 @@
 
 .main-content {
   flex: 1;
-  height: 100vh; /* subtract topbar height */
+  height: 100vh;
   padding: 20px;
   padding-left: 70px;
   overflow-y: auto;
-  background-color: #f0f4ff;
+
+  /* Dark theme background */
+  background: linear-gradient(145deg, #0e0f1a, #15172b);
+  color: #eaf6ff;
+
+  /* Smooth text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (max-width: 786px) {
   .sidebar-collapsed .main-content {
     margin-left: 0px;
     transition: margin 0.3s ease;
+    padding-left: 20px;
   }
+
   .sidebar-open .main-content {
     margin-left: 0;
     transition: margin 0.3s ease;
+    padding-left: 20px;
   }
+}
+
+/* Optional: subtle scrollbar for dark mode */
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: rgba(159, 123, 255, 0.4);
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(159, 123, 255, 0.6);
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
 }

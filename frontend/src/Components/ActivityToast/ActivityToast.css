@@ -1,0 +1,136 @@
+.activity-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+
+    /* Layout */
+    max-width: 90vw;
+    /* Responsive width */
+    width: 360px;
+    /* Fixed base width */
+    height: 60px;
+    /* Fixed height */
+    padding: 0.75rem 1.25rem;
+    box-sizing: border-box;
+
+    /* Text */
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f5f5f5;
+    white-space: nowrap;
+    /* Keep single line */
+    overflow: hidden;
+    /* Hide overflow */
+    text-overflow: ellipsis;
+    /* Show ... for long text */
+
+    /* Style */
+    border-radius: 0.75rem;
+    background: #121212;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+
+    /* Animation */
+    opacity: 0;
+    z-index: 9999;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+.activity-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.activity-toast.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+}
+
+/* Variants with subtle left border */
+.activity-toast.joined {
+    border-left: 6px solid #2ecc71;
+    /* Green */
+}
+
+.activity-toast.leave {
+    border-left: 6px solid #e74c3c;
+    /* Red */
+}
+
+.activity-toast.message {
+    border-left: 6px solid #3498db;
+    /* Blue */
+}
+
+/* Responsive tweaks for small screens */
+@media (max-width: 480px) {
+    .activity-toast {
+        width: 95vw;
+        font-size: 0.9rem;
+        height: auto;
+        /* Allow wrapping if needed */
+        white-space: normal;
+        /* Wrap text */
+        text-overflow: clip;
+        /* Remove ellipsis */
+    }
+}
+
+.activity-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+
+    max-width: 90vw;
+    width: 360px;
+    height: 60px;
+    padding: 0.75rem 1.25rem;
+    box-sizing: border-box;
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #f5f5f5;
+    display: flex;
+    /* Add flex */
+    align-items: center;
+    justify-content: space-between;
+    /* Message left, button right */
+
+    border-radius: 0.75rem;
+    background: #121212;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+
+    opacity: 0;
+    z-index: 9999;
+    transition: all 0.4s ease;
+    pointer-events: auto;
+    /* Allow button click */
+}
+
+.toast-message {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 0.75rem;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    color: #f5f5f5;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.toast-close:hover {
+    opacity: 1;
+}

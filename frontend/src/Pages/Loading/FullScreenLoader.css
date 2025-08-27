@@ -1,206 +1,151 @@
-/* FullScreenLoader.css - Advanced Full Page Loading Styles */
-
-/* ==========================================================================
-   1. CSS Variables for Theming
-   ========================================================================== */
+/*
+ * CSS Variables for a consistent theme
+ */
 :root {
-  /* Adjusted for a dark background */
-  --loader-primary-color: #00e676; /* Bright green for contrast on black */
-  --loader-secondary-color: #69f0ae; /* Lighter green for gradients/secondary elements */
-  --loader-background-color: rgba(
-    10,
-    25,
-    47,
-    0.95
-  ); /* Semi-transparent BLACK overlay */
-
-  --loader-dot-size: 15px;
-  --loader-dot-spacing: 8px;
-  --loader-animation-duration: 1.4s;
-  --loader-spinner-size: 60px;
-  --loader-spinner-border-width: 6px;
-  --loader-pulse-size: 80px;
-
-  /* --- NEW & Adjusted VARIABLES for Super Circular Loader --- */
-  --super-loader-size: 100px;
-  --super-loader-border-width: 8px;
-  --super-loader-inner-color: #212121; /* Dark grey for inner circle background */
-  --super-loader-gradient-start: var(
-    --loader-primary-color
-  ); /* Use primary loader color */
-  --super-loader-gradient-end: var(
-    --loader-secondary-color
-  ); /* Use secondary loader color */
-  --super-loader-text-color: var(
-    --loader-primary-color
-  ); /* Match primary color */
-  --super-loader-speed: 2s; /* Speed of full rotation */
-
-  /* --- NEW VARIABLES for Logo --- */
-  --loader-logo-max-width: 180px; /* Max width for your logo */
-  --loader-logo-margin-bottom: 40px; /* Space between logo and loader */
-
-  /* Spacing (assuming these are defined globally or locally as needed) */
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-xxl: 48px;
-  --font-size-lg: 18px; /* Assuming font-size-lg is defined */
+  --background-dark: #0f172a;
+  --text-light: #f1f5f9;
+  --primary-color: #6366f1;
+  /* Tailwind indigo-500 */
+  --secondary-color: #2563eb;
+  /* Tailwind blue-600 */
+  --loader-bg: rgba(15, 23, 42, 0.95);
+  --colorful-gradient: linear-gradient(45deg,
+      #ff6b6b,
+      #feca57,
+      #54a0ff,
+      #5f27cd);
+  --logo-shadow: 0 0 15px rgba(99, 102, 241, 0.7);
 }
 
-/* ==========================================================================
-   2. Fullscreen Overlay Container
-   ========================================================================== */
+/*
+ * Fullscreen Overlay
+ * Covers the entire viewport with a semi-transparent dark background
+ */
 .fullscreen-loader-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(
-    --loader-background-color
-  ); /* Solid black with slight transparency */
+  background-color: var(--loader-bg);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  pointer-events: none;
   opacity: 1;
-  visibility: visible;
-  transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
+/*
+ * Loader Container
+ * The central box that holds the logo, spinner, and text
+ */
 .loader-container {
   display: flex;
-  flex-direction: column; /* Stack logo, loader, and text vertically */
+  flex-direction: column;
   align-items: center;
-  /* Removed gap here, as we'll use specific margins for logo/loader */
+  gap: 1.5rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-/* ==========================================================================
-   3. Deskly Logo Styles (NEW)
-   ========================================================================== */
-.loader-logo {
-  max-width: var(--loader-logo-max-width);
-  height: auto; /* Maintain aspect ratio */
-  margin-bottom: var(
-    --loader-logo-margin-bottom
-  ); /* Space between logo and loader */
-  /* If your logo is a solid color, you might want to filter it to white/a bright color */
-  /* Example for a black SVG logo on black background, to turn it white: */
-  /* filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%); */
-  /* Or if your logo is already bright, no filter needed */
-}
-
-/* ==========================================================================
-   4. Super Circular Loader (Adjusted Colors)
-   ========================================================================== */
-.super-circular-loader {
-  position: relative;
-  width: var(--super-loader-size);
-  height: var(--super-loader-size);
-  border-radius: 50%;
+/*
+ * Logo Group Styles
+ * Flex container for the favicon and name logo
+ */
+.loader-logo-group {
   display: flex;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 0 25px rgba(0, 230, 118, 0.4); /* Glow effect from loader color */
+  gap: 1rem;
 }
 
-.loader-inner-circle {
-  position: absolute;
-  width: calc(
-    var(--super-loader-size) - (var(--super-loader-border-width) * 2)
-  );
-  height: calc(
-    var(--super-loader-size) - (var(--super-loader-border-width) * 2)
-  );
-  border-radius: 50%;
-  background-color: var(--super-loader-inner-color); /* Dark inner background */
-  z-index: 1;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3); /* Stronger inner shadow */
+/*
+ * Favicon Rotation Animation
+ */
+.logo-spinner {
+  width: 64px;
+  height: 64px;
+  animation: rotate 2s linear infinite;
 }
 
-.loader-outer-ring {
-  position: absolute;
+.loader-favicon {
   width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: var(--super-loader-border-width) solid transparent;
-  border-top-color: var(--super-loader-gradient-start);
-  border-right-color: var(--super-loader-gradient-end);
-  transform: rotate(45deg);
-  animation: superSpin var(--super-loader-speed) linear infinite;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
 
-.loader-fill-arc {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: var(--super-loader-border-width) solid transparent;
-  background: conic-gradient(
-    transparent 0deg,
-    transparent 180deg,
-    var(--super-loader-gradient-start) 180deg,
-    var(--super-loader-gradient-end) 360deg
-  );
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    transparent calc(50% - var(--super-loader-border-width)),
-    black calc(50% - var(--super-loader-border-width) + 1px)
-  );
-  mask-image: radial-gradient(
-    circle at center,
-    transparent calc(50% - var(--super-loader-border-width)),
-    black calc(50% - var(--super-loader-border-width) + 1px)
-  );
-  animation: superSpin var(--super-loader-speed) linear infinite reverse;
-  opacity: 0.7;
+/*
+ * Static Name Logo Styles
+ */
+.loader-logo-name {
+  max-width: 180px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+  animation: logoPulse 2s infinite ease-in-out;
 }
 
-.loading-text-super {
-  font-size: var(--font-size-lg);
-  color: var(--super-loader-text-color); /* Bright text on black */
+/*
+ * Loading Text
+ * Styled text that displays a clear message
+ */
+.loading-text {
+  font-size: 1.2rem;
   font-weight: 500;
-  margin-top: var(--spacing-md);
-  letter-spacing: 0.8px;
-  animation: pulseText 1.5s infinite ease-in-out;
+  color: var(--text-light);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--colorful-gradient);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 4s linear infinite;
 }
 
-/* Keyframes (remain the same) */
-@keyframes superSpin {
-  0% {
+/*
+ * Keyframe Animations
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  from {
     transform: rotate(0deg);
   }
-  100% {
+
+  to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes pulseText {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.03);
-    opacity: 0.8;
-  }
+@keyframes logoPulse {
+
+  0%,
   100% {
     transform: scale(1);
-    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
   }
 }
 
-/* ==========================================================================
-   5. Accessibility & Responsiveness
-   ========================================================================== */
-/* Basic responsiveness for logo size */
-@media (max-width: 600px) {
-  .loader-logo {
-    max-width: 140px; /* Slightly smaller logo on very small screens */
+@keyframes textShine {
+  0% {
+    background-position: 200% 0%;
+  }
+
+  100% {
+    background-position: -200% 0%;
   }
 }
-
-/* ... (Keep existing accessibility styles) ... */

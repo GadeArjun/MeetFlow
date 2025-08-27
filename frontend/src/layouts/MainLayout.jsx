@@ -25,7 +25,7 @@ const MainLayout = ({ children }) => {
       <ScrollToTop scrollRef={contentRef} />
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="main-content" ref={contentRef}>
-        <Topbar toggleSidebar={toggleSidebar} />
+        <Topbar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="page-wrapper">{children}</div>
       </div>
     </div>

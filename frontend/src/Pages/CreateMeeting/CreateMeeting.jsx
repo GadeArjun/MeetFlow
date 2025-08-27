@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import { MeetingContext } from "../../context/MeetingContext";
+import Meta from "../../Components/Meta/Meta";
 
 const CreateMeeting = () => {
   const [form, setForm] = useState({
@@ -19,13 +20,13 @@ const CreateMeeting = () => {
     date: "",
     startTime: "",
     endTime: "",
-    password: "",
+    // password: "",
   });
 
   const [emails, setEmails] = useState([{ id: 1, value: "" }]);
   const [generatedLink, setGeneratedLink] = useState("");
   const [error, setError] = useState("");
-  const { setMeetings } = useContext(MeetingContext);
+  const { setMeetingsData } = useContext(MeetingContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -82,9 +83,9 @@ const CreateMeeting = () => {
       date: form.date,
       startTime: form.startTime,
       endTime: form.endTime,
-      password: form.password || null,
+      // password: form.password || null,
       invitedEmails: validEmails,
-      isPublic: validEmails.length === 0, // open to all if no invitedEmails
+      // isPublic: validEmails.length === 0, // open to all if no invitedEmails
     };
 
     try {
@@ -99,7 +100,15 @@ const CreateMeeting = () => {
       );
 
       const { meeting } = response.data;
-      setMeetings((prev) => [meeting, ...prev]);
+      // setMeetingsData((prev) =>{
+      // {...prev,
+      // scheduledMeetings:[...prev.scheduledMeetings,meeting]}
+      // }
+      // );
+      setMeetingsData((prev) => {
+        const newMeetings = [meeting, ...prev.scheduledMeetings];
+        return { ...prev, scheduledMeetings: newMeetings };
+      });
       setGeneratedLink(
         window.location.origin + (meeting.meetingLink || meetingLink)
       );
@@ -124,147 +133,153 @@ const CreateMeeting = () => {
   };
 
   return (
-    <div className="create-meeting-container">
-      <h2>Create New Meeting</h2>
+    <>
+      <Meta page={"createMeeting"} />
+      <div className="create-meeting-container">
+        <h2>Create New Meeting</h2>
 
-      {error && <p className="error-text">{error}</p>}
+        {error && <p className="error-text">{error}</p>}
 
-      <form className="meeting-form" onSubmit={handleSubmit}>
-        <label>Meeting Title</label>
-        <input
-          type="text"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          required
-        />
+        <form className="meeting-form" onSubmit={handleSubmit}>
+          <label>Meeting Title</label>
+          <input
+            type="text"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Description</label>
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          rows={3}
-        />
+          <label>Description</label>
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            rows={3}
+          />
 
-        <div className="row">
-          <div>
-            <label>
-              <Calendar size={14} /> Date
-            </label>
-            <input
-              type="date"
-              name="date"
-              min={new Date().toLocaleDateString("en-CA")}
-              value={form.date}
-              onChange={handleChange}
-              required
-            />
+          <div className="row">
+            <div>
+              <label>
+                <Calendar size={14} /> Date
+              </label>
+              <input
+                type="date"
+                name="date"
+                min={new Date().toLocaleDateString("en-CA")}
+                value={form.date}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label>
+                <Clock size={14} /> Start Time
+              </label>
+              <input
+                type="time"
+                name="startTime"
+                value={form.startTime}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label>
+                <Clock size={14} /> End Time
+              </label>
+              <input
+                type="time"
+                name="endTime"
+                value={form.endTime}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
-          <div>
-            <label>
-              <Clock size={14} /> Start Time
-            </label>
-            <input
-              type="time"
-              name="startTime"
-              value={form.startTime}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label>
-              <Clock size={14} /> End Time
-            </label>
-            <input
-              type="time"
-              name="endTime"
-              value={form.endTime}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
 
-        <label>
-          <MailPlus size={14} /> Invite Participants
-        </label>
-        {emails.map((email, index) => (
-          <div className="email-row" key={email.id}>
-            <span>{index + 1}.</span>
-            <input
-              type="email"
-              placeholder="example@email.com"
-              value={email.value}
-              onChange={(e) => handleEmailChange(index, e.target.value)}
-            />
-            {emails.length > 1 && (
-              <button
-                type="button"
-                onClick={() => removeEmailField(index)}
-                className="remove-btn"
-              >
-                <XCircle size={18} />
-              </button>
-            )}
-          </div>
-        ))}
-        <button type="button" className="add-email-btn" onClick={addEmailField}>
-          + Add Email
-        </button>
+          <label>
+            <MailPlus size={14} /> Invite Participants
+          </label>
+          {emails.map((email, index) => (
+            <div className="email-row" key={email.id}>
+              <span>{index + 1}.</span>
+              <input
+                type="email"
+                placeholder="example@email.com"
+                value={email.value}
+                onChange={(e) => handleEmailChange(index, e.target.value)}
+              />
+              {emails.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeEmailField(index)}
+                  className="remove-btn"
+                >
+                  <XCircle size={18} />
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            className="add-email-btn"
+            onClick={addEmailField}
+          >
+            + Add Email
+          </button>
 
-        <label>Password (optional)</label>
+          {/* <label>Password (optional)</label>
         <input
           type="text"
           name="password"
           value={form.password}
           placeholder="Meeting password"
           onChange={handleChange}
-        />
+        /> */}
 
-        <button type="submit" className="create-button">
-          Create Meeting
-        </button>
-      </form>
+          <button type="submit" className="create-button">
+            Create Meeting
+          </button>
+        </form>
 
-      {generatedLink && (
-        <div className="meeting-link-box">
-          <h4>
-            <Link2 size={18} style={{ marginRight: "6px" }} />
-            Meeting Link
-          </h4>
-          <div className="link-actions">
-            <input type="text" readOnly value={generatedLink} />
+        {generatedLink && (
+          <div className="meeting-link-box">
+            <h4>
+              <Link2 size={18} style={{ marginRight: "6px" }} />
+              Meeting Link
+            </h4>
+            <div className="link-actions">
+              <input type="text" readOnly value={generatedLink} />
 
-            <div className="buttons">
-              <button
-                className="copy-btn"
-                onClick={() => {
-                  navigator.clipboard.writeText(`${generatedLink}`);
-                  alert("Link copied to clipboard!");
-                }}
-              >
-                <Copy size={16} />
-                Copy
-              </button>
+              <div className="buttons">
+                <button
+                  className="copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${generatedLink}`);
+                    alert("Link copied to clipboard!");
+                  }}
+                >
+                  <Copy size={16} />
+                  Copy
+                </button>
 
-              <a
-                className="whatsapp-btn"
-                href={`https://wa.me/?text=${encodeURIComponent(
-                  "Join my Deskly meeting: " + generatedLink
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Send size={16} />
-                Share
-              </a>
+                <a
+                  className="whatsapp-btn"
+                  href={`https://wa.me/?text=${encodeURIComponent(
+                    `📢 *Join my MeetFlow Meeting!*\n\n🔗 ${generatedLink}\n\n🚀 MeetFlow — Smart Online Meetings`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Share on WhatsApp
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

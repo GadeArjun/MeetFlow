@@ -8,6 +8,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import "./ErrorPage.css";
+import Meta from "../../Components/Meta/Meta";
 
 const ErrorPage = ({
   code = 500,
@@ -17,6 +18,8 @@ const ErrorPage = ({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
+  <>
+   <Meta page={"error"} />
     <div className="error-container">
       <div className="error-box">
         <AlertCircle size={48} className="error-icon" />
@@ -62,6 +65,7 @@ const ErrorPage = ({
         )}
       </div>
     </div>
+    </>
   );
 };
 
