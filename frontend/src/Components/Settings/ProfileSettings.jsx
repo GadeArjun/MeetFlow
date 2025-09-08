@@ -1,11 +1,13 @@
 // 📁 src/components/Settings/ProfileSettings.jsx
 import React, { useState, useContext, useEffect } from "react";
 import "./ProfileSettings.css";
+import meetFlowFavicon from "../../assets/images/favicon.png"; // Import your favicon
 import { UserContext } from "../../context/UserContext";
 
 const ProfileSettings = () => {
-  const { user, setUser } = useContext(UserContext);
-
+  const { user, setUser, token } = useContext(UserContext);
+  console.log({ user });
+  const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState({
     name: "",
     username: "",
@@ -45,6 +47,7 @@ const ProfileSettings = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     try {
@@ -56,10 +59,16 @@ const ProfileSettings = () => {
         formData.append("file", profile.imageFile);
 
         // Simulate image upload (replace with real endpoint)
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/upload`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await res.json();
         avatarUrl = data.url;
@@ -73,14 +82,17 @@ const ProfileSettings = () => {
       };
 
       // Send profile update request
-      const res = await fetch("/api/user/update-profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(updatedData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/profile`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
 
       const updatedUser = await res.json();
       setUser(updatedUser);
@@ -88,6 +100,8 @@ const ProfileSettings = () => {
     } catch (err) {
       console.error("Error updating profile:", err);
       alert("Failed to update profile.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -138,8 +152,22 @@ const ProfileSettings = () => {
           />
         </label>
 
-        <button type="submit" className="save-btn">
+        {/* <button type="submit" className="save-btn">
           Save Changes
+        </button> */}
+        <button type="submit" className="save-btn" disabled={loading}>
+          {loading ? (
+            <div className="loading-button-content">
+              <img
+                src={meetFlowFavicon}
+                alt="Loading Icon"
+                className="rotating-icon"
+              />
+              <span className="loading-text-btn">Saving Changes...</span>
+            </div>
+          ) : (
+            "Save Changes"
+          )}
         </button>
       </form>
     </div>

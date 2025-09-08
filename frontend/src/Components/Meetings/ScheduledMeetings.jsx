@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ScheduledMeetings.css";
-import { Plus, Video } from "lucide-react";
+import { LucideShare2, Plus, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { MeetingContext } from "../../context/MeetingContext";
@@ -142,6 +142,34 @@ const ScheduledMeetings = () => {
                 >
                   <Video size={16} style={{ marginRight: "6px" }} />
                   Join
+                </button>
+                <button
+                  className="join-link"
+                  onClick={() => {
+                    const formattedMessage = `
+                        📌 *Meeting Invitation*
+
+                        🔹 *Title:* ${meeting.title}
+                        📝 *Description:* ${meeting.description}
+                        📅 *Date:* ${new Date(
+                          meeting.date
+                        ).toLocaleDateString()}
+                        ⏰ *Time:* ${meeting.startTime} - ${meeting.endTime}
+                        🔑 *Code:* ${meeting.meetingCode}
+
+                        👉 Join here: ${window.location.origin}${
+                      meeting.meetingLink
+                    }`.trim();
+
+                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+                      formattedMessage
+                    )}`;
+                    window.open(whatsappUrl, "_blank");
+                  }}
+                  disabled={meeting.status === "cancelled"}
+                >
+                  <LucideShare2 size={16} style={{ marginRight: "6px" }} />
+                  Share
                 </button>
               </div>
             );

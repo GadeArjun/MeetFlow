@@ -75,18 +75,23 @@ const VideoGrid = ({
                 <div
                   className="both-off-card"
                   style={{
-                    //   flex: 1,
-                    //   display: "flex",
-                    //   alignItems: "center",
-                    //   justifyContent: "center",
-                    // background: "linear-gradient(135deg, #4e54c8, #8f94fb)",
                     background: `${
                       backgroundColors[index % backgroundColors.length]
                     }`,
-                    //   borderRadius: "8px",
                   }}
                 >
-                  <User size={48} color="white" />
+                  {/* <User size={48} color="white" /> */}
+                  {user.avatarUrl ? (
+                    <img
+                      src={user.avatarUrl}
+                      alt={user.name}
+                      className="avatar-img"
+                    />
+                  ) : (
+                    <div className="avatar-circle">
+                      {user.name?.[0]?.toUpperCase() || "?"}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="dual-stream-container split">
@@ -173,7 +178,11 @@ const VideoGrid = ({
 
               {/* Participant name */}
               <div className="participant-name">
-                {isSelf ? "You" : user.name}
+                {/* {isSelf ? "You" : user.name} */}
+                <div className="user-info">
+                  <div className="user-name">{isSelf ? "You" : user.name}</div>
+                  <div className="user-email">{user.email}</div>
+                </div>
               </div>
 
               {/* audio section */}

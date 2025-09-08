@@ -25,6 +25,7 @@ const CreateMeeting = () => {
 
   const [emails, setEmails] = useState([{ id: 1, value: "" }]);
   const [generatedLink, setGeneratedLink] = useState("");
+  const [formattedMessageToShare, setFormattedMessageToShare] = useState("");
   const [error, setError] = useState("");
   const { setMeetingsData } = useContext(MeetingContext);
 
@@ -67,6 +68,7 @@ const CreateMeeting = () => {
     e.preventDefault();
     setError("");
     setGeneratedLink("");
+    setFormattedMessageToShare({});
 
     if (!isValidTime()) {
       return setError("Start time must be in the future.");
@@ -109,9 +111,25 @@ const CreateMeeting = () => {
         const newMeetings = [meeting, ...prev.scheduledMeetings];
         return { ...prev, scheduledMeetings: newMeetings };
       });
-      setGeneratedLink(
-        window.location.origin + (meeting.meetingLink || meetingLink)
-      );
+
+      setGeneratedLink(`${window.location.origin}${meetingLink}`);
+
+      const formattedMessage = `
+                        📌 *Meeting Invitation*
+
+                        🔹 *Title:* ${meeting.title}
+                        📝 *Description:* ${meeting.description}
+                        📅 *Date:* ${new Date(
+                          meeting.date
+                        ).toLocaleDateString()}
+                        ⏰ *Time:* ${meeting.startTime} - ${meeting.endTime}
+                        🔑 *Code:* ${meeting.meetingCode}
+
+                        👉 Join here: ${window.location.origin}${
+        meeting.meetingLink
+      }`.trim();
+      setFormattedMessageToShare(formattedMessage);
+
       alert("Meeting created successfully!");
 
       // Reset form
@@ -146,6 +164,7 @@ const CreateMeeting = () => {
             type="text"
             name="title"
             value={form.title}
+            placeholder="Meeting Title"
             onChange={handleChange}
             required
           />
@@ -156,6 +175,7 @@ const CreateMeeting = () => {
             value={form.description}
             onChange={handleChange}
             rows={3}
+            placeholder="Meeting Description"
           />
 
           <div className="row">
@@ -267,7 +287,7 @@ const CreateMeeting = () => {
                 <a
                   className="whatsapp-btn"
                   href={`https://wa.me/?text=${encodeURIComponent(
-                    `📢 *Join my MeetFlow Meeting!*\n\n🔗 ${generatedLink}\n\n🚀 MeetFlow — Smart Online Meetings`
+                    `${formattedMessageToShare}\n\n🚀`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"

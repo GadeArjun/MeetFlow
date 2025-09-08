@@ -52,7 +52,6 @@
 }
 
 .video-tile:hover {
-  transform: scale(1.02);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -185,35 +184,69 @@
 
 /* Hover effect */
 .both-off-card:hover {
-  transform: scale(1.05);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* 🎨 Fixed Gradient Pool (5 colors cycling) */
-.both-off-card:nth-child(5n + 1) {
-  background: linear-gradient(135deg, #4e54c8, #8f94fb);
-  /* Indigo → Light Blue */
+.avatar-img {
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  /* for images */
+  margin-bottom: 8px;
+  border: 2px solid white;
+  transition: all 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.both-off-card:nth-child(5n + 2) {
-  background: linear-gradient(135deg, #ff6a00, #ee0979);
-  /* Orange → Pink */
+.avatar-img:hover {
+  transform: scale(1.05);
 }
 
-.both-off-card:nth-child(5n + 3) {
-  background: linear-gradient(135deg, #11998e, #38ef7d);
-  /* Teal → Green */
+.avatar-circle {
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  transition: all 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.both-off-card:nth-child(5n + 4) {
-  background: linear-gradient(135deg, #fc466b, #3f5efb);
-  /* Pink → Blue */
+.avatar-circle:hover {
+  transform: scale(1.05);
 }
 
-.both-off-card:nth-child(5n + 5) {
-  background: linear-gradient(135deg, #f7971e, #ffd200);
-  /* Orange → Yellow */
+.user-info {
+  text-align: center;
+  color: #fff;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.user-email {
+  font-size: 12px;
+  opacity: 0.8;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 /* === Responsive adjustments === */
 @media (max-width: 768px) {
@@ -235,5 +268,22 @@
 
   .other-grid {
     gap: 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .user-info {
+    max-width: 100px;
+  }
+
+  .avatar-img {
+    width: 60px;
+    height: 60px;
+
+  }
+
+  .avatar-circle {
+    width: 60px;
+    height: 60px;
   }
 }

@@ -91,6 +91,44 @@
   }
 }
 
+/* Loading button content styles */
+.loading-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.rotating-icon {
+  width: 30px;
+  height: 30px;
+  animation: rotate 1s linear infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.loading-text-btn {
+  font-size: larger;
+  font-weight: 600;
+  /* Apply the colorful gradient */
+  background: var(--colorful-gradient);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 4s linear infinite;
+}
+
+/* Keyframe Animations */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* 📱 Ultra small screens - 200px */
 @media (max-width: 200px) {
   .profile-form {

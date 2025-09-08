@@ -249,6 +249,7 @@ export const MeetingSocketProvider = ({ children }) => {
       });
 
       setJoined(true);
+      localStorage.removeItem("meetingId");
     } catch (error) {
       console.log(`Error while joining the room ${error}`);
       alert(

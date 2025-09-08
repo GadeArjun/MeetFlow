@@ -4,7 +4,7 @@ import "./AccountSettings.css";
 import { UserContext } from "../../context/UserContext";
 
 const AccountSettings = () => {
-  const { user } = useContext(UserContext);
+  const { user, token } = useContext(UserContext);
 
   const [account, setAccount] = useState({
     email: user?.email || "",
@@ -33,18 +33,21 @@ const AccountSettings = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/user/account", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          email,
-          currentPassword,
-          newPassword,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/account`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            email,
+            currentPassword,
+            newPassword,
+          }),
+        }
+      );
 
       const data = await res.json();
 
@@ -53,8 +56,15 @@ const AccountSettings = () => {
       }
 
       alert("Account updated successfully!");
+      setAccount({
+        email: user?.email || "",
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (err) {
       setError(err.message);
+      // alert(err.message);
     } finally {
       setLoading(false);
     }

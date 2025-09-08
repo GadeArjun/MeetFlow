@@ -90,6 +90,11 @@
   /* Lighter gray for dark mode */
 }
 
+.form-error {
+  color: #ef4444;
+  /* Red for error */
+}
+
 /* 📱 Mobile adjustments */
 @media (max-width: 640px) {
   .save-btn {

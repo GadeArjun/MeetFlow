@@ -17,11 +17,19 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required"], // Should be hashed
-      select: false, // Prevent password from being sent in query results
+      // select: false, // Prevent password from being sent in query results
     },
     avatarUrl: {
       type: String,
       default: "", // Can be default profile image URL
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
+    username: {
+      type: String,
+      trim: true,
     },
 
     // ✅ Verification and Auth

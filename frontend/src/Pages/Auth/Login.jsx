@@ -56,7 +56,6 @@ const Login = () => {
           setToken(response.data.token);
           const meetingId = localStorage.getItem("meetingId");
           if (meetingId) {
-            localStorage.setItem("meetingId", "");
             navigate(`/join-meeting/${meetingId}`);
           } else {
             navigate("/dashboard");

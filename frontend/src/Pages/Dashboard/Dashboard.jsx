@@ -9,6 +9,7 @@ import {
   Radio,
   Video,
   TrendingUp,
+  LucideShare2,
 } from "lucide-react";
 import { MeetingContext } from "../../context/MeetingContext";
 import "./Dashboard.css";
@@ -257,12 +258,49 @@ export default function Dashboard() {
               <div className="countdown-wrap">
                 <Countdown date={getDateTime(ongoing.date, ongoing.endTime)} />
               </div>
-              <button
-                className="join-btn"
-                onClick={() => navigate(ongoing.meetingLink)}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap", // allows wrapping on small screens
+                  gap: "8px", // space between buttons
+                  justifyContent: "center", // center align
+                }}
               >
-                <Video size={16} /> Join Live
-              </button>
+                <button
+                  className="join-btn"
+                  onClick={() => navigate(ongoing.meetingLink)}
+                >
+                  <Video size={16} /> Join Live
+                </button>
+
+                <button
+                  className="join-btn"
+                  onClick={() => {
+                    const meeting = ongoing; // your meeting object
+                    const formattedMessage = `
+                        📌 *Meeting Invitation*
+
+                        🔹 *Title:* ${meeting.title}
+                        📝 *Description:* ${meeting.description}
+                        📅 *Date:* ${new Date(
+                          meeting.date
+                        ).toLocaleDateString()}
+                        ⏰ *Time:* ${meeting.startTime} - ${meeting.endTime}
+                        🔑 *Code:* ${meeting.meetingCode}
+
+                        👉 Join here: ${window.location.origin}${
+                      meeting.meetingLink
+                    }`.trim();
+
+                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+                      formattedMessage
+                    )}`;
+                    window.open(whatsappUrl, "_blank");
+                  }}
+                >
+                  <LucideShare2 size={16} /> Share Meeting
+                </button>
+              </div>
             </div>
           ) : (
             <div className="countdown-card empty">
@@ -311,14 +349,48 @@ export default function Dashboard() {
                     <span className="countdown-small">
                       {start ? <Countdown date={start} /> : "—"}
                     </span>
-                    <button
-                      className="join-btn small"
-                      onClick={() => navigate(m.meetingLink)}
-                      disabled={m.status === "cancelled"}
-                      aria-disabled={m.status === "cancelled"}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap", // allows wrapping on small screens
+                        gap: "8px", // space between buttons
+                        justifyContent: "center", // center align
+                      }}
                     >
-                      <Video size={14} /> Join
-                    </button>
+                      <button
+                        className="join-btn small"
+                        onClick={() => navigate(m.meetingLink)}
+                        disabled={m.status === "cancelled"}
+                        aria-disabled={m.status === "cancelled"}
+                      >
+                        <Video size={14} /> Join
+                      </button>
+                      <button
+                        className="join-btn small"
+                        onClick={() => {
+                          const formattedMessage = `
+                        📌 *Meeting Invitation*
+
+                        🔹 *Title:* ${m.title}
+                        📝 *Description:* ${m.description}
+                        📅 *Date:* ${new Date(m.date).toLocaleDateString()}
+                        ⏰ *Time:* ${m.startTime} - ${m.endTime}
+                        🔑 *Code:* ${m.meetingCode}
+
+                        👉 Join here: ${window.location.origin}${
+                            m.meetingLink
+                          }`.trim();
+
+                          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+                            formattedMessage
+                          )}`;
+                          window.open(whatsappUrl, "_blank");
+                        }}
+                        disabled={m.status === "cancelled"}
+                      >
+                        <LucideShare2 size={14} /> share
+                      </button>
+                    </div>
                   </li>
                 );
               })}
