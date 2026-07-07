@@ -12,7 +12,7 @@
 ---
 > ## 🌐 Live Demo
 >You can try out the live version of **MeetFlow - Real-Time Video Meeting Platform** here:  
->**[Clikc Here](https://meetflow-3mv5.onrender.com/)**  
+>**[Clikc Here](https://meet-flow-puce.vercel.app/)**  
 ---
 
 ## 📋 Table of Contents
